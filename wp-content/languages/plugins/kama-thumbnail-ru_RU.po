@@ -1,0 +1,76 @@
+# Translation of Plugins - Kama Thumbnail - Development (trunk) in Russian
+# This file is distributed under the same license as the Plugins - Kama Thumbnail - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-05-30 08:34:52+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
+"X-Generator: GlotPress/4.0.0-alpha.4\n"
+"Language: ru\n"
+"Project-Id-Version: Plugins - Kama Thumbnail - Development (trunk)\n"
+
+#. Author URI of the plugin
+msgid "https://wp-kama.ru/"
+msgstr "https://wp-kama.ru/"
+
+#: classes/Options_Page_Fields.php:74
+msgid "URL of stub image."
+msgstr "URL картинки-заглушки."
+
+#: classes/Options_Page_Fields.php:68
+msgid "URL of cache folder."
+msgstr "URL папки кэша."
+
+#: classes/Options_Page_Fields.php:62
+msgid "Full path to the cache folder with 755 rights or above."
+msgstr "Полный путь до папки кэша с правами 755 или выше."
+
+#: classes/Make_Thumb.php:858
+msgid "Folder where thumbs will be created not exists. Create it manually: \"s%\""
+msgstr "Директории для создания миниатюр не существует. Создайте её: \"s%\""
+
+#: classes/Options_Page.php:102
+msgid "Kama Thumbnail Settings"
+msgstr "Настройки Kama Thumbnail"
+
+#: classes/Options_Page_Fields.php:80
+msgid "Custom field key, where the thumb URL will be. Default:"
+msgstr "Название произвольного поля, куда будет записываться УРЛ миниатюры. По умолчанию:"
+
+#: classes/Options_Page_Fields.php:92
+msgid "Quality of creating thumbs from 0 to 100. Default:"
+msgstr "Качество создаваемых миниатюр от 0 до 100. По умолчанию:"
+
+#: classes/Options_Page_Fields.php:100
+msgid "Don't show nophoto image."
+msgstr "Не показывать картинку-заглушку."
+
+#: classes/Options_Page.php:227
+msgid "Settings"
+msgstr "Настройки"
+
+#: classes/Cache.php:281
+msgid "All custom fields <code>%s</code> was deleted."
+msgstr "Все произвольные поля <code>%s</code> были удалены."
+
+#: classes/Cache.php:286
+msgid "Couldn't delete <code>%s</code> custom fields"
+msgstr "Не удалось удалить произвольные поля <code>%s</code>"
+
+#. Plugin Name of the plugin
+msgid "Kama Thumbnail"
+msgstr "Kama Thumbnail"
+
+#. Author of the plugin
+msgid "Kama"
+msgstr "Kama"
+
+#: classes/Options_Page_Fields.php:86
+msgid "Hosts from which thumbs can be created. One per line: <i>sub.mysite.com</i>. Specify <code>any</code>, to use any hosts."
+msgstr "Хосты с которых разрешается создавать миниатюры. 1 на строке: <i>sub.mysite.com</i>. Укажите здесь <code>any</code>, чтобы можно было использовать любые хосты."
+
+#. Plugin URI of the plugin
+msgid "https://wp-kama.ru/142"
+msgstr "https://wp-kama.ru/142"
