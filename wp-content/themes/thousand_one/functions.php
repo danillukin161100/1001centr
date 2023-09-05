@@ -128,3 +128,8 @@ add_action('wp_enqueue_scripts', function () {
 	wp_enqueue_script('api-maps', 'https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=b1636bea-a71f-4f63-83f5-554063b5a20b', array(), '2.1', true);
 	wp_enqueue_script('thousand_one-app', get_template_directory_uri() . '/js/app.js', array(), _S_VERSION, true);
 });
+
+/* Функция для форматирования телефона в ссылку */
+function phoneLink($phone) {
+	
+}
