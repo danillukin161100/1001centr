@@ -131,5 +131,6 @@ add_action('wp_enqueue_scripts', function () {
 
 /* Функция для форматирования телефона в ссылку */
 function phoneLink($phone) {
-	
+	$phone = preg_replace('/[^+0-9]/', '', $phone);
+	return urlencode($phone);
 }
