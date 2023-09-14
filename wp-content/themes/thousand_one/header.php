@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
+
 	<!--==========   FAVICON   ==========-->
 	<link rel="apple-touch-icon" sizes="76x76" href="<?= get_template_directory_uri() ?>/static/favicon/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="<?= get_template_directory_uri() ?>/static/favicon/favicon-32x32.png">
@@ -12,15 +13,20 @@
 	<link rel="manifest" href="<?= get_template_directory_uri() ?>/static/favicon/site.webmanifest">
 	<link rel="mask-icon" href="<?= get_template_directory_uri() ?>/static/favicon/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
+
+	<!--==========   SEO   ==========-->
+	<title><?= getMetaTag('title') ?></title>
+	<meta name="description" content="<?= getMetaTag('description') ?>">
+
 	<?php wp_head() ?>
 </head>
 
-<body>
+<body <?php body_class() ?>>
 	<header class="header">
 		<div class="header__container">
 			<div class="header-inner">
 				<div class="header-logoBx">
-					<a href="" class="header__logo">
+					<a href="/" class="header__logo">
 						<img src="<?= get_template_directory_uri() ?>/images/header/logo.svg" alt="">
 					</a>
 					<div class="header-burger">
@@ -52,7 +58,9 @@
 						<div class="header-phoneBx">
 							<a href="tel: <?= phoneLink($phone) ?>" class="header__phone"><?= $phone ?></a>
 							<!-- /.header__phone -->
-							<span class="header__text">Бесплатная консультация</span>
+							<?php if ($subtitle_phone = get_field('subtitle_phone', 'options')) { ?>
+								<span class="header__text">Бесплатная консультация</span>
+							<?php } ?>
 						</div>
 					<?php endif ?>
 					<!-- /.header-phoneBx -->
@@ -64,32 +72,6 @@
 
 		</div>
 	</header>
-	<div class="_overlay-bg modal header-navBx" data-popup="">
-		<div class="header-navBx-helper">
-			<nav class="header-nav">
-				<ul>
-					<li class="header-nav__item"><a href="#" class="header-nav__link">Статьи</a></li>
-					<li class="header-nav__item">
-						<p data-type="repair" class="header-nav__link">Задать вопрос мастеру</p>
-					</li>
-					<li class="header-nav__item">
-						<p data-type="repair" class="header-nav__link">Добавить сервис</p>
-					</li>
-				</ul>
-			</nav>
-			<!-- /.header-nav -->
-			<div class="mobile header-catalog">
-				<button class="header-catalog__button">
-					<span class="header-catalog-svgBx">
-						<img src="<?= get_template_directory_uri() ?>/images/elements/list.svg" alt="">
-						<img src="<?= get_template_directory_uri() ?>/images/elements/cross.svg" alt="">
-					</span>
-					<!-- /.header-catalog-svgBx -->
-					<span>Каталог техники</span>
-				</button>
-			</div>
-			<!-- /.header-catalogBx -->
-		</div>
-	</div>
+	<?php get_template_part('parts/popup', 'mobileNav') ?>
 	<!-- /.header-navBx -->
 	<main class="main">

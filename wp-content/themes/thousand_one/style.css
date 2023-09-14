@@ -2,3 +2,14 @@
 Theme Name: 1001 центр
 Version: 1.0.0
 */
+
+section.not_found {
+	min-height: calc(100vh - 401px);
+	display: flex;
+	text-align: center;
+	align-items: center;
+}
+
+section.not_found .content__title {
+	max-width: 100%;
+}

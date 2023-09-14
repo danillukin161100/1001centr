@@ -129,9 +129,21 @@ const togglePopupWindows = () => {
       const popup = target.closest('._overlay-bg')
 
       popup.classList.remove('_is-open')
-      document.querySelector('.header-catalog__button').classList.remove('active')
 
+      //дополнительные пересчеты конкретных поп апов
+      document.querySelector('.header-catalog__button').classList.remove('active')
       if(!document.querySelector('.header-navBx').classList.contains('_is-open')) document.querySelector('.header-burger').classList.remove('active')
+
+      if(popup.closest('.region')) {
+        document.querySelector('.region').style.maxHeight =  0
+        if(window.innerWidth <= 768) {
+          let navBxMobile = document.querySelector('.header-navBx')
+          navBxMobile.style.top = document.querySelector('.header').clientHeight + 'px'
+          document.querySelector('.catalog').style.top = 0
+        }else {
+          document.querySelector('.catalog').style.top = document.querySelector('.header').clientHeight + 'px'
+        }
+      }
 
       toggleBodyLock(false)
     }
@@ -227,12 +239,14 @@ class SwipeablePopup {
 
 document.addEventListener('DOMContentLoaded', function(){
     if(document.querySelector('.region')) {
-        if(localStorage.getItem('region') == null) {
-            setTimeout(() => {
-                document.querySelector('.region').classList.add('_is-open')
-                localStorage.setItem('region', '1')
-            }, 5000)
-        }
+        // if(localStorage.getItem('region') == null) {
+        //     setTimeout(() => {
+        //         document.querySelector('.region').classList.add('_is-open')
+        //         localStorage.setItem('region', '1')
+        //     }, 5000)
+        // }
+
+        document.querySelector('.region').style.maxHeight =  document.querySelector('.region').scrollHeight + 'px'
     }
 
     if(document.querySelector('input[name="tel"]')) {
@@ -260,7 +274,9 @@ document.addEventListener('DOMContentLoaded', function(){
                 for(let i = 0; i < items.length; i++){
                     result.push({
                         "name": items[i].querySelector('.services__item-title').textContent,
-                        "address": items[i].querySelector('.services__item-info-address').textContent
+                        "address": items[i].querySelector('.services__item-info-address').textContent,
+                        "check_link": items[i].querySelector('.services__item-titleBx img').src,
+                        "service_link": items[i].querySelector('.services__item-titleBx img').src,
                     });
                 }
                 done(result);
@@ -458,8 +474,22 @@ document.addEventListener('DOMContentLoaded', function(){
 
     if(document.querySelector('.service-map')) {
         let addr = $('.js-map').data('addr'),
-            x = $(".js-map").data('x'),
-            y = $(".js-map").data('y')
+            x = $(".js-map").data('x') === undefined ? 0 : $(".js-map").data('x'),
+            y =$(".js-map").data('y') === undefined ? 0 : $(".js-map").data('y')
+
+        if(!x || !y) {
+            console.log(435345)
+            // $.ajax({
+            //     url: 'https://geocode-maps.yandex.ru/1.x?apikey=4a37db78-ee1a-4edb-a0c7-c9f4cb3c3d6f',
+            //     method: 'get',
+            //     dataType: 'json',
+            //     success: function(data){
+            //         console.log(data)
+            //     }
+            // });
+        }
+
+            return false;
 
         ymaps.ready(init);
 
@@ -519,7 +549,19 @@ document.addEventListener('DOMContentLoaded', function(){
         if(window.innerWidth <= 768) {
             let swipeableWrapper = new SwipeablePopup('.catalog-wrapper', '.catalog')
         }
+
+        let header = document.querySelector('.header'),
+            navBxMobile = document.querySelector('.header-navBx')
+
+        if(window.innerWidth <= 768) {
+            navBxMobile.style.top = header.getBoundingClientRect().top + header.clientHeight + 'px'
+            catalog.style.top = 0
+        }else {
+            catalog.style.top = header.getBoundingClientRect().top + header.clientHeight + 'px'
+        }
     }
+
+
     if(document.querySelector('.modal.repair')) {
         if(window.innerWidth <= 768) {
             let swipeableRepair = new SwipeablePopup('.repair-formBx', '.repair')
@@ -586,7 +628,7 @@ function simpleTemplating(data) {
         html += `
             <li>
                 <div class="services__item">
-                    <a href="#" class="services__item-titleBx"><img src="images/services/check.svg" alt="">
+                    <a href="#" class="services__item-titleBx"><img src="${item.check_link}" alt="">
                         <p class="services__item-title">${item.name}</p>
                     </a>
                     <div class="services__item-info"><img src="images/services/address.svg" alt="">

@@ -8,6 +8,11 @@
  * @package thousand_one
  */
 
+/* Icnludes */
+require_once __DIR__ . '/inc/FooterWalkerNavMenu.php';
+require_once __DIR__ . '/inc/routes.php';
+
+/* Version */
 if (!defined('_S_VERSION')) {
 	define('_S_VERSION', '1.0.0');
 }
@@ -37,7 +42,7 @@ add_action('after_setup_theme', function () {
 	* hard-coded <title> tag in the document head, and expect WordPress to
 	* provide it for us.
 	*/
-	add_theme_support('title-tag');
+	// add_theme_support('title-tag');
 
 	/*
 	* Enable support for Post Thumbnails on posts and pages.
@@ -136,6 +141,7 @@ function phoneLink($phone)
 	return urlencode($phone);
 }
 
+/* Загрузка внешних изображений по URL в медиабиблиотеку WP */
 function uploadImage($image_url)
 {
 	require_once(ABSPATH . 'wp-admin/includes/image.php');
@@ -165,4 +171,121 @@ function uploadImage($image_url)
 	wp_update_attachment_metadata($attach_id, $attach_data);
 
 	return $attach_id;
+}
+
+/* Получить мета поле Title/H1/Description */
+function getMetaTag($tag)
+{
+	if (!empty(get_field('meta_' . $tag))) {
+		return get_field('meta_' . $tag);
+	} elseif (is_archive('service')) {
+		$city = get_query_var('city', 'all_cities');
+		$cat = get_query_var('categories', 'all_categories');
+		$firm = get_query_var('firms', 'all_firms');
+		$result = 'Сервисные центры';
+
+		if ($city != 'all_cities') {
+			$city = get_term_by('slug', $city, 'city');
+			$city_label = (!empty(get_field('variant_2', $city))) ? get_field('variant_2', $city) : $city->name;
+			$result_city = ' в ' . $city_label;
+		}
+
+		
+		if ($cat != 'all_categories') {
+			$cat = get_term_by('slug', $cat, 'categories');
+			$cat_label = (!empty(get_field('variant_2', $cat))) ? get_field('variant_2', $cat) : $cat->name;
+			$result_cat = ' по ремонту ' . $cat_label;
+		}
+
+		if ($firm != 'all_firms') {
+			$firm = get_term_by('slug', $firm, 'firms');
+			$result_firm = ' ' . $firm->name;
+		}
+
+		$result .= $result_cat . $result_firm . $result_city;
+
+		return $result;
+	}
+}
+
+/* Получить URL изображения категории */
+function getCategoryImageName($term_id, $brand = false)
+{
+	$dir_path = get_template_directory();
+	$dir_url = get_template_directory_uri();
+	$term = get_term($term_id, 'categories');
+	$image_name = get_field('image_name', $term);
+	$image_path = "/images/logo/$brand/$image_name.png";
+
+	if (empty($image_name)) {
+		$image_name = $term->slug . '.png';
+	}
+	if (!$brand) {
+		$image_path = "/images/logo/nobrand/$image_name.png";
+	}
+	if (!file_exists($dir_path . $image_path)) {
+		$image_path = "/images/no-photo.png";
+	}
+
+	return $dir_url . $image_path;
+}
+
+/* Получить URL изображения бренда */
+function getFirmImageName($term_id, $test = false)
+{
+	$dir_path = get_template_directory();
+	$dir_url = get_template_directory_uri();
+	$term = get_term($term_id, 'firms');
+	$image_name = (!empty(get_field('image_name', $term))) ? get_field('image_name', $term) : 'logo-' . $term->slug . '.png';
+	$image_path = "/images/logo/brands/$image_name";
+
+	if ($test) {
+		return $image_path;
+	}
+
+	if (!file_exists($dir_path . $image_path)) {
+		$image_path = "/images/no-photo.png";
+	}
+
+	return $dir_url . $image_path;
+}
+
+/* Получить URL на город */
+function getCitiesPermalink($city)
+{
+	if (gettype($city) == 'integer') {
+		$city = get_term($city, 'city');
+	}
+
+	$url = '/services/' . $city->slug;
+
+	return $url;
+}
+
+/* Получить URL на категорию */
+function getCategoriesPermalink($cat)
+{
+	if (gettype($cat) == 'integer') {
+		$cat = get_term($cat, 'categories');
+	}
+
+	$city_slug = get_query_var('city', 'all_cities');
+
+	$url = '/services/' . $city_slug . '/' . $cat->slug;
+
+	return $url;
+}
+
+/* Получить URL на бренд */
+function getFirmsPermalink($firm)
+{
+	if (gettype($firm) == 'integer') {
+		$firm = get_term($firm, 'firms');
+	}
+
+	$city_slug = get_query_var('city', 'all_cities');
+	$cat_slug = get_query_var('categories', 'all_categories');
+	$url = '/services/' . $city_slug . '/' . $cat_slug . '/' . $firm->slug;
+
+	return $url;
 }
