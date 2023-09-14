@@ -22,8 +22,6 @@
 /** Имя базы данных для WordPress */
 define( 'DB_NAME', '1001centr' ); // l92235wp_1001cen
 
-// kjasbdkajsdbaksjdbaskjdbaskjd
-
 /** Имя пользователя базы данных */
 define( 'DB_USER', 'root' );
 
