@@ -28,8 +28,6 @@ define( 'DB_USER', 'root' );
 /** Пароль к базе данных */
 define( 'DB_PASSWORD', '' ); // 21kx6K&N
 
-// asdasdad
-
 /** Имя сервера базы данных */
 define( 'DB_HOST', 'localhost' );
 
