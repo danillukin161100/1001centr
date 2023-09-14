@@ -25,8 +25,6 @@ define( 'DB_NAME', '1001centr' ); // l92235wp_1001cen
 /** Имя пользователя базы данных */
 define( 'DB_USER', 'root' );
 
-// askjdbaksjdbaskd
-
 /** Пароль к базе данных */
 define( 'DB_PASSWORD', '' ); // 21kx6K&N
 
