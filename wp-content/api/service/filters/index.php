@@ -3,12 +3,12 @@ header('Content-Type: application/json');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
 
 $data = file_get_contents('php://input');
-// $data = json_decode($data);
-$data = [
-	'city' => 6,
-	'cat' => 577,
-	'firm' => 175,
-];
+$data = json_decode($data);
+// $data = [
+// 	'city' => 6,
+// 	'cat' => 577,
+// 	'firm' => 175,
+// ];
 $result = [
 	'success' => false,
 	'message' => 'Что-то пошло не так',
