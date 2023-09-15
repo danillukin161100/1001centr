@@ -15,7 +15,7 @@
 						<ul class="control-list control-list-city">
 							<?php foreach ($cities as $city) { ?>
 								<li class="control-list__item">
-									<div class="control-list__link" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
+									<div class="control-list__link" data-code="<?= $city->term_id ?>"><?= $city->name ?></div>
 								</li>
 							<?php } ?>
 						</ul>
@@ -34,7 +34,7 @@
 						<ul class="control-list control-list-technics">
 							<?php foreach ($categories as $cat) { ?>
 								<li class="control-list__item">
-									<div class="control-list__link" data-cat="<?= $cat->term_id ?>"><?= $cat->name ?></div>
+									<div class="control-list__link" data-code="<?= $cat->term_id ?>"><?= $cat->name ?></div>
 								</li>
 							<?php } ?>
 						</ul>
@@ -53,7 +53,7 @@
 						<ul class="control-list control-list-brands">
 							<?php foreach ($firms as $firm) { ?>
 								<li class="control-list__item">
-									<div class="control-list__link" data-firm="<?= $firm->term_id ?>"><?= $firm->name ?></div>
+									<div class="control-list__link" data-code="<?= $firm->term_id ?>"><?= $firm->name ?></div>
 								</li>
 							<?php } ?>
 						</ul>
