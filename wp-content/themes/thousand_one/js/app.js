@@ -737,7 +737,7 @@ function sendRequest(type = 'POST', link, data, processData = true,  callback = 
     console.log(data)
     $.ajax({
         type: type,
-        url: `${window.location.href}${link}`,
+        url: `${location.protocol}//${location.hostname}/${link}`,
         data: data ? data : '',
         dataType: "json",
         processData: processData,
