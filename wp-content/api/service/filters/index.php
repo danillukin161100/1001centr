@@ -26,37 +26,43 @@ $args = [
 ];
 
 $city_id = $data->city;
-$city = 'all_cities';
+$city_url = 'all_cities';
 
-if (!empty($city_id)) {
+if ($city_id) {
 	$args['tax_query'][] = [
 		'taxonomy' => 'city',
 		'field' => 'ID',
 		'terms' => $city_id,
 	];
-	$city = get_term_by('ID', $city_id, 'city');
+	if ($city = get_term_by('ID', $city_id, 'city')) {
+		$city_url = $city->slug;
+	}
 }
 
 $cat_id = $data->cat;
-$cat = 'all_categories';
-if (!empty($cat_id)) {
+$cat_url = 'all_categories';
+if ($cat_id) {
 	$args['tax_query'][] = [
 		'taxonomy' => 'categories',
 		'field' => 'ID',
 		'terms' => $cat_id,
 	];
-	$cat = get_term_by('ID', $cat_id, 'categories');
+	if ($cat = get_term_by('ID', $cat_id, 'categories')) {
+		$cat_url = $cat->slug;
+	}
 }
 
 $firm_id = $data->firm;
-$firm = 'all_firms';
-if (!empty($firm_id)) {
+$firm_url = 'all_firms';
+if ($firm_id) {
 	$args['tax_query'][] = [
 		'taxonomy' => 'firms',
 		'field' => 'ID',
 		'terms' => $firm_id,
 	];
-	$firm = get_term_by('ID', $firm_id, 'firms');
+	if ($firm = get_term_by('ID', $firm_id, 'firms')) {
+		$firm_url = $firm->slug;
+	}
 }
 
 $services = new WP_Query($args);
@@ -64,7 +70,7 @@ $services = new WP_Query($args);
 if ($services->have_posts()) {
 	$result['success'] = true;
 	$result['count'] = count($services->posts);
-	$result['link'] = get_home_url() . '/services/' . $city->slug . '/' . $cat->slug . '/' . $firm->slug;
+	$result['link'] = get_home_url() . '/services/' . $city_url . '/' . $cat_url . '/' . $firm_url;
 	unset($result['message']);
 }
 
