@@ -746,7 +746,8 @@ body {
   background-color: #fff;
 }
 .technics__item-imgBx img {
-  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 .technics__item-title {
   text-align: center;
@@ -818,10 +819,15 @@ body {
   align-items: center;
   justify-content: center;
   transition: 0.5s cubic-bezier(0.21, 0.44, 0.37, 0.99);
+  padding: 10px;
 }
 .brands__item:hover {
   background-color: #fff;
   border-color: #fff;
+}
+.brands__item img {
+  max-width: 100%;
+  height: auto;
 }
 .brands__button {
   width: 100%;
@@ -1574,6 +1580,14 @@ body {
   font-family: "OnestMedium", sans-serif;
   color: #5DBA78;
 }
+.service-info__close {
+  background: rgba(193, 68, 68, 0.04);
+  text-align: center;
+  padding: 13px 0;
+  border-radius: 10px;
+  font-family: "OnestMedium", sans-serif;
+  color: #C14444;
+}
 .service-info-box {
   padding-top: 26px;
 }
@@ -1678,6 +1692,9 @@ body {
     position: relative;
   }
   .service-info__open {
+    margin-top: 20px;
+  }
+  .service-info__close {
     margin-top: 20px;
   }
   .service-info-buttonBx {

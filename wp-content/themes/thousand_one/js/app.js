@@ -236,7 +236,6 @@ class SwipeablePopup {
 
     }
 }
-
 document.addEventListener('DOMContentLoaded', function(){
     if(document.querySelector('.region')) {
         // if(localStorage.getItem('region') == null) {
@@ -489,7 +488,6 @@ document.addEventListener('DOMContentLoaded', function(){
             y =$(".js-map").data('y') === undefined ? 0 : $(".js-map").data('y')
 
         if(!x || !y) {
-            console.log(435345)
             // $.ajax({
             //     url: 'https://geocode-maps.yandex.ru/1.x?apikey=4a37db78-ee1a-4edb-a0c7-c9f4cb3c3d6f',
             //     method: 'get',
@@ -499,8 +497,6 @@ document.addEventListener('DOMContentLoaded', function(){
             //     }
             // });
         }
-
-            return false;
 
         ymaps.ready(init);
 
@@ -576,7 +572,6 @@ document.addEventListener('DOMContentLoaded', function(){
     if(document.querySelector('.modal.repair')) {
         if(window.innerWidth <= 768) {
             let swipeableRepair = new SwipeablePopup('.repair-formBx', '.repair')
-            console.log(435345)
         }
     }
     if(document.querySelector('.services__item')) {
@@ -603,7 +598,6 @@ document.addEventListener('DOMContentLoaded', function(){
             input.addEventListener('focus', (e) => {
                 e.target.parentNode.classList.add('active')
             })
-            console.log()
             $(input).hideseek({ });
         })
 
@@ -631,12 +625,41 @@ document.addEventListener('DOMContentLoaded', function(){
     if(document.querySelector('#services-control-input')) {
         $('#services-control-input').hideseek({ });
     }
+
+    if(document.querySelector('.search-input')) {
+        document.querySelectorAll('.search-input').forEach(input => {
+            input.addEventListener('change', (e) => {
+                if(!e.target.value) return false;
+                let list = e.target.parentNode.querySelector('.control-list'),
+                    $li = list.querySelector('li:not([style="display: none;"])')
+                if($li) {
+                    e.target.value = $li.querySelector('div').textContent
+                    e.target.parentNode.querySelector('input[type="hidden"]').value = $li.querySelector('div').dataset.code
+                    list.closest('.control-selectBx').classList.remove('active')
+                }
+
+                sendRequest('POST', 'wp-content/api/service/filters/', generateFilterData(), (json) => {
+                    console.log(json)
+                })
+            })
+        })
+
+        let controlLists = document.querySelectorAll('.control-list')
+        controlLists.forEach(list => {
+            list.addEventListener('click', ({target}) => {
+                if(target.classList.contains('control-list__link')) {
+                    list.parentNode.querySelector('input').value = target.textContent
+                    list.parentNode.querySelector('input[type="hidden"]').value = target.dataset.code
+                    list.parentNode.classList.remove('active')
+                }
+            })
+        })
+    }
 });
 
 function simpleTemplating(data) {
     var html = '';
     $.each(data, function(index, item){
-        console.log(item.svgsIcon)
         html += `
             <li>
                 <div class="services__item">
@@ -709,6 +732,30 @@ $('.svg img').each(function () {
     }, 'xml');
 
 });
+
+function sendRequest(type = 'POST', link, data, processData = true,  callback = json => {}) {
+    console.log(data)
+    $.ajax({
+        type: type,
+        url: `${window.location.href}${link}`,
+        data: data ? data : '',
+        dataType: "json",
+        processData: processData,
+        contentType: 'application/json',
+        success: function (response) {
+            callback(response);
+        }
+    });
+}
+
+let generateFilterData = (sectionOfInput) => {
+    let formData = {};
+
+    $('input[type="hidden"]').each(function() {
+        formData[$(this).attr('name')] = $(this).val() === '' ? false : parseInt($(this).val());
+    });
+    return JSON.stringify(formData)
+}
 
 // Паралакс мышей ========================================================================================
 // const mousePrlx = new MousePRLX({})

@@ -11,6 +11,7 @@
 				?>
 					<div class="control-selectBx">
 						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input">
+                        <input type="hidden" name="city">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-city">
 							<?php foreach ($cities as $city) { ?>
@@ -30,6 +31,7 @@
 				?>
 					<div class="control-selectBx">
 						<input type="text" placeholder="Все виды техники" data-list=".control-list-technics" class="search-input">
+                        <input type="hidden" name="cat">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-technics">
 							<?php foreach ($categories as $cat) { ?>
@@ -49,6 +51,7 @@
 				?>
 					<div class="control-selectBx">
 						<input type="text" placeholder="Все производители" data-list=".control-list-brands" class="search-input">
+                        <input type="hidden" name="firm">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-brands">
 							<?php foreach ($firms as $firm) { ?>

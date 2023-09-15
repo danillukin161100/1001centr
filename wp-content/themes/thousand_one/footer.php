@@ -53,49 +53,7 @@
 <?php get_template_part('parts/popup', 'catalog') ?>
 <?php get_template_part('parts/popup', 'repair') ?>
 
-<div class="_overlay-bg modal-white region">
-	<div class="region-wrapper">
-		<div class="region__container">
-			<div class="region-top">
-				<div class="region__pretitle">Укажите, пожалуйста, ваш регион.</div>
-				<div class="button-close region__cross">
-					<i class="fa-solid fa-xmark"></i>
-				</div>
-				<!-- /.region__cross -->
-			</div>
-			<!-- /.region-top -->
-			<div class="region-cityBx">
-				<p class="region__city">Москва</p>
-				<button class="button-close region__button">Подтвердить</button>
-			</div>
-			<!-- /.region-cityBx -->
-			<div class="region-cities">
-				<a href="#" class="region-cities__item">Волгоград</a>
-				<a href="#" class="region-cities__item">Воронеж</a>
-				<a href="#" class="region-cities__item">Екатеринбург</a>
-				<a href="#" class="region-cities__item">Йошкар-Ола</a>
-				<a href="#" class="region-cities__item">Казань</a>
-				<a href="#" class="region-cities__item">Краснодар</a>
-				<a href="#" class="region-cities__item">Красноярск</a>
-				<a href="#" class="region-cities__item">Великий Новгород</a>
-				<a href="#" class="region-cities__item">Новосибирск</a>
-				<a href="#" class="region-cities__item">Омск</a>
-				<a href="#" class="region-cities__item">Пермь</a>
-				<a href="#" class="region-cities__item">Ростов-на-Дону</a>
-				<a href="#" class="region-cities__item">Самара</a>
-				<a href="#" class="region-cities__item">Санкт-Петербург</a>
-				<a href="#" class="region-cities__item">Тюмень</a>
-				<a href="#" class="region-cities__item">Уфа</a>
-				<a href="#" class="region-cities__item">Чеоябинск</a>
-			</div>
-			<!-- /.region-cities -->
-			<p class="region__notice">Выбором или отказом от выбора региона вы подтверждаете свое совершеннолетие, даете согласие на обработку персональных данных, а также передачу информации от них третьим лицам, соглашаетесь с условиями пользования сайта</p>
-		</div>
-		<!-- /.region__container -->
-	</div>
-	<!-- /.region-wrapper -->
-</div>
-<!-- /.modal-white region -->
+
 <?php wp_footer() ?>
 </body>
 

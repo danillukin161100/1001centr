@@ -81,7 +81,7 @@ $address = get_field('address');
 								</div>
 								*/ ?>
 								<div class="about__item">
-									<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/4.svg" alt=""></div>
+									<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/5.svg" alt=""></div>
 									<p class="about__item-title">Продажа запасных частей</p>
 								</div>
 							<?php } ?>
