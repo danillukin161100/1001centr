@@ -183,20 +183,21 @@ function getMetaTag($tag)
 		$cat = get_query_var('categories', 'all_categories');
 		$firm = get_query_var('firms', 'all_firms');
 		$result = 'Сервисные центры';
-
+        $result_city = null;
 		if ($city != 'all_cities') {
 			$city = get_term_by('slug', $city, 'city');
 			$city_label = (!empty(get_field('variant_2', $city))) ? get_field('variant_2', $city) : $city->name;
 			$result_city = ' в ' . $city_label;
 		}
 
-		
+        $result_cat = null;
 		if ($cat != 'all_categories') {
 			$cat = get_term_by('slug', $cat, 'categories');
 			$cat_label = (!empty(get_field('variant_2', $cat))) ? get_field('variant_2', $cat) : $cat->name;
 			$result_cat = ' по ремонту ' . $cat_label;
 		}
 
+        $result_firm = null;
 		if ($firm != 'all_firms') {
 			$firm = get_term_by('slug', $firm, 'firms');
 			$result_firm = ' ' . $firm->name;

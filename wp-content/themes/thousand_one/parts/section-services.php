@@ -82,13 +82,13 @@ if (!$services->have_posts()) {
 									<a href="<?= get_the_permalink() ?>" class="services__item-title"><?= get_the_title() ?></a>
 								</div>
 								<?php if ($address = get_field('address')) { ?>
-									<div class="services__item-info"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
+									<div class="services__item-info address"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
 										<div class="services__item-info-main">
 											<p class="services__item-info-address"><?= $address ?></p>
 										</div>
 									</div>
 								<?php } ?>
-								<div class="services__item-info"><img src="<?= get_template_directory_uri() ?>/images/services/clock.svg" alt="">
+								<div class="services__item-info time"><img src="<?= get_template_directory_uri() ?>/images/services/clock.svg" alt="">
 									<div class="services__item-info-main">
 										<p>
 											<?php
@@ -101,7 +101,7 @@ if (!$services->have_posts()) {
 									</div>
 								</div>
 								<?php if ($rate = get_field('rate')) { ?>
-									<div class="services__item-info"><img src="<?= get_template_directory_uri() ?>/images/services/star.svg" alt="">
+									<div class="services__item-info rate"><img src="<?= get_template_directory_uri() ?>/images/services/star.svg" alt="">
 										<div class="services__item-info-main">
 											<p><?= $rate ?></p>
 										</div>

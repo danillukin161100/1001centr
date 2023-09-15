@@ -272,11 +272,22 @@ document.addEventListener('DOMContentLoaded', function(){
                 let result = [];
                 let items = document.querySelectorAll('.services__item')
                 for(let i = 0; i < items.length; i++){
+                    let address = items[i].querySelector('.services__item-info-address'),
+                        name = items[i].querySelector('.services__item-title'),
+                        check_link = items[i].querySelector('.services__item-titleBx img'),
+                        service_link = items[i].querySelector('.services__item-title'),
+                        phone_icon = items[i].querySelector('.services__item-phone img'),
+                        iconAddress = items[i].querySelector('.services__item-info.address img'),
+                        iconTime = items[i].querySelector('.services__item-info.time img'),
+                        iconRate = items[i].querySelector('.services__item-info.rate img')
+
                     result.push({
-                        "name": items[i].querySelector('.services__item-title').textContent,
-                        "address": items[i].querySelector('.services__item-info-address').textContent,
-                        "check_link": items[i].querySelector('.services__item-titleBx img').src,
-                        "service_link": items[i].querySelector('.services__item-titleBx img').src,
+                        "name": name != null ? name.textContent : '',
+                        "address": address != null ? address.textContent : '',
+                        "check_link": check_link != null ? check_link.src : '',
+                        "service_link": service_link != null ? service_link.href : '',
+                        "phone_icon": phone_icon != null ? phone_icon.src : '',
+                        "svgsIcon": [iconAddress, iconTime, iconRate],
                     });
                 }
                 done(result);
@@ -625,33 +636,38 @@ document.addEventListener('DOMContentLoaded', function(){
 function simpleTemplating(data) {
     var html = '';
     $.each(data, function(index, item){
+        console.log(item.svgsIcon)
         html += `
             <li>
                 <div class="services__item">
-                    <a href="#" class="services__item-titleBx"><img src="${item.check_link}" alt="">
+                    <a href="${item.service_link}" class="services__item-titleBx"><img src="${item.check_link}" alt="">
                         <p class="services__item-title">${item.name}</p>
                     </a>
-                    <div class="services__item-info"><img src="images/services/address.svg" alt="">
-                        <div class="services__item-info-main">
-                            <p>${item.address}</p>
-                        </div>
-                    </div>
-                    <div class="services__item-info"><img src="images/services/clock.svg" alt="">
-                        <div class="services__item-info-main">
-                            <p>
-                                Пн-Пт: 10:00 - 21:00 <br>
-                                Сб-Вс: 10:00 - 21:00
-                            </p>
-                        </div>
-                    </div>
-                    <div class="services__item-info"><img src="images/services/star.svg" alt="">
+                    ${item.svgsIcon[0] === null ? '' 
+                                                : `<div class="services__item-info"><img src="${item.svgsIcon[0].currentSrc}" alt="">
+                                                        <div class="services__item-info-main">
+                                                            <p>${item.address}</p>
+                                                        </div>
+                                                    </div>`}
+                    
+                    ${item.svgsIcon[1] === null ? '' 
+                                                : `<div class="services__item-info"><img src="${item.svgsIcon[1].currentSrc}" alt="">
+                                                    <div class="services__item-info-main">
+                                                        <p>
+                                                            Пн-Пт: 10:00 - 21:00 <br>
+                                                            Сб-Вс: 10:00 - 21:00
+                                                        </p>
+                                                    </div>
+                                                </div>`}
+                    
+                    <div class="services__item-info"><img src="${item.svgsIcon[2] === null ? '' : item.svgsIcon[2].currentSrc}" alt="">
                         <div class="services__item-info-main">
                             <p>5.0 (15)</p>
                         </div>
                     </div>
                     <div class="services__item-buttonBx">
                         <button class="services__item-feedback pb" data-type="repair">Оставить заявку</button>
-                        <a href="tel: +7 (969) 999-42-80" class="services__item-phone"><img src="images/services/phone.svg" alt=""></a>
+                        <a href="tel: +7 (969) 999-42-80" class="services__item-phone"><img src="${item.phone_icon}" alt=""></a>
                     </div>
                 </div>
             </li>
