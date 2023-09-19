@@ -34,11 +34,12 @@ if (!empty($_COOKIE['city'])) {
 				$categories = get_terms([
 					'taxonomy' => 'categories',
 				]);
+				$cat_var = (!empty(get_query_var('categories'))) ? get_term_by('slug', get_query_var('categories'), 'categories') : null;
 				if (!empty($categories)) {
 				?>
 					<div class="control-selectBx">
-						<input type="text" placeholder="Все виды техники" data-list=".control-list-technics" class="search-input">
-						<input type="hidden" name="cat">
+						<input type="text" placeholder="Все виды техники" data-list=".control-list-technics" class="search-input" value="<?= (!empty($cat_var)) ? $cat_var->name : '' ?>">
+						<input type="hidden" name="cat" value="<?= (!empty($cat_var)) ? $cat_var->term_id : '' ?>">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-technics">
 							<?php foreach ($categories as $cat) { ?>
@@ -54,11 +55,12 @@ if (!empty($_COOKIE['city'])) {
 				$firms = get_terms([
 					'taxonomy' => 'firms',
 				]);
+				$firm_var = (!empty(get_query_var('firms'))) ? get_term_by('slug', get_query_var('firms'), 'firms') : null;
 				if (!empty($firms)) {
 				?>
 					<div class="control-selectBx">
-						<input type="text" placeholder="Все производители" data-list=".control-list-brands" class="search-input">
-						<input type="hidden" name="firm">
+						<input type="text" placeholder="Все производители" data-list=".control-list-brands" class="search-input" value="<?= (!empty($firm_var)) ? $firm_var->name : '' ?>">
+						<input type="hidden" name="firm" value="<?= (!empty($firm_var)) ? $firm_var->term_id : '' ?>">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-brands">
 							<?php foreach ($firms as $firm) { ?>
