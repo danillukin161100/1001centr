@@ -51,7 +51,7 @@
 				<?php if (!empty($cities)) { ?>
 					<div class="region-cities">
 						<?php foreach ($cities as $city) { ?>
-							<a href="<?= getCitiesPermalink($city->term_id) ?>" class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></a>
+							<div class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
 						<?php } ?>
 					</div>
 					<!-- /.region-cities -->

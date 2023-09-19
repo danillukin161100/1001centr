@@ -237,6 +237,23 @@ class SwipeablePopup {
     }
 }
 document.addEventListener('DOMContentLoaded', function(){
+    // установка куки текущего города
+    if(document.querySelector('.region-cities')) {
+        let cities = document.querySelector('.region-cities'),
+            accessButton = document.querySelector('.region__button')
+
+        cities.addEventListener('click', (e) => {
+            if(e.target.closest('.region-cities__item')) {
+                setCookie('city', e.target.dataset.city, 7)
+                window.location.reload()
+            }
+        })
+        accessButton.addEventListener('click', () => {
+            setCookie('city', document.querySelector('.region__city').dataset.city, 7)
+            window.location.reload()
+        })
+    }
+
     if(document.querySelector('.region')) {
         // if(localStorage.getItem('region') == null) {
         //     setTimeout(() => {
@@ -293,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function(){
             },
             pageSize: pageSize,
             callback: function(data, pagination) {
-                var html = simpleTemplating(data);
+                let html = simpleTemplating(data);
                 $('#data-container').html(html);
             },
             afterNextOnClick: function(){
@@ -501,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function(){
         ymaps.ready(init);
 
         function init() {
-            var Map = new ymaps.Map("service-map", {
+            let Map = new ymaps.Map("service-map", {
                 center: [x, y],
                 zoom: 10,
                 controls: [
@@ -627,6 +644,17 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     if(document.querySelector('.search-input')) {
+        let sendFilters = (data) => {
+            sendRequest('POST', 'wp-content/api/service/filters/', data, true, json => {
+                if(json.link) {
+                    let countFilter = document.querySelector('.control__button')
+                    countFilter.querySelector('span').textContent = json.count
+                    countFilter.href = json.link
+                }
+            })
+        }
+
+
         document.querySelectorAll('.search-input').forEach(input => {
             input.addEventListener('change', (e) => {
                 if(!e.target.value) return false;
@@ -638,9 +666,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     list.closest('.control-selectBx').classList.remove('active')
                 }
 
-                sendRequest('POST', 'wp-content/api/service/filters/', generateFilterData(), (json) => {
-                    console.log(json)
-                })
+                sendFilters(generateFilterData())
             })
         })
 
@@ -651,6 +677,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     list.parentNode.querySelector('input').value = target.textContent
                     list.parentNode.querySelector('input[type="hidden"]').value = target.dataset.code
                     list.parentNode.classList.remove('active')
+                    sendFilters(generateFilterData())
                 }
             })
         })
@@ -658,7 +685,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function simpleTemplating(data) {
-    var html = '';
+    let html = '';
     $.each(data, function(index, item){
         html += `
             <li>
@@ -733,6 +760,36 @@ $('.svg img').each(function () {
 
 });
 
+// Функция для установки куки
+let setCookie = (name, value, days) => {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+let getCookie = (name) => {
+    let allCookies = document.cookie;
+    let cookiesArray = allCookies.split("; ");
+
+    for (let i = 0; i < cookiesArray.length; i++) {
+        let cookie = cookiesArray[i];
+        let parts = cookie.split("=");
+        let cookieName = parts[0];
+        let cookieValue = parts[1];
+
+        if (cookieName === name) {
+            // Нашли куку с заданным именем, возвращаем ее значение
+            return decodeURIComponent(cookieValue);
+        }
+    }
+
+    // Если кука с указанным именем не найдена, возвращаем null или пустую строку
+    return null;
+}
+
 function sendRequest(type = 'POST', link, data, processData = true,  callback = json => {}) {
     console.log(data)
     $.ajax({
@@ -743,7 +800,7 @@ function sendRequest(type = 'POST', link, data, processData = true,  callback = 
         processData: processData,
         contentType: 'application/json',
         success: function (response) {
-            callback(response);
+            callback(response)
         }
     });
 }

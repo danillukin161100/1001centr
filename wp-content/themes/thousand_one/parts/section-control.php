@@ -63,7 +63,7 @@
 					</div>
 				<?php } ?>
 				<div class="control-selectBx">
-					<button class="pb control__button">Показать <span>92</span></button>
+					<a href="#" class="pb control__button">Показать <span>92</span></a>
 				</div>
 			</form>
 			<!-- /.control-box -->
