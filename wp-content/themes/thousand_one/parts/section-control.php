@@ -1,10 +1,3 @@
-<?php
-$cookie_city = null;
-if (!empty($_COOKIE['city'])) {
-	$cookie_city = get_term($_COOKIE['city'], 'city');
-}
-?>
-
 <section class="control">
 	<div class="control__container">
 		<div class="control-inner">
@@ -14,11 +7,17 @@ if (!empty($_COOKIE['city'])) {
 				$cities = get_terms([
 					'taxonomy' => 'city',
 				]);
+				$cookie_city = (!empty($_COOKIE['city'])) ? get_term($_COOKIE['city'], 'city') : null;
+				$city_var = (!empty(get_query_var('city'))) ? get_term_by('slug', get_query_var('city'), 'city') : null;
+				$city_result = null;
+				if (!empty($cookie_city) || !empty($city_var)) {
+					$city_result = ($city_var != $cookie_city) ? $city_var : $cookie_city;
+				}
 				if (!empty($cities)) {
 				?>
 					<div class="control-selectBx">
-						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input search-input-city" value="<?= (!empty($cookie_city)) ? $cookie_city->name : '' ?>">
-						<input type="hidden" name="city" value="<?= (!empty($cookie_city)) ? $cookie_city->name : '' ?>">
+						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input search-input-city" value="<?= (!empty($city_result)) ? $city_result->name : '' ?>">
+						<input type="hidden" name="city" value="<?= (!empty($city_result)) ? $city_result->name : '' ?>">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-city">
 							<?php foreach ($cities as $city) { ?>
