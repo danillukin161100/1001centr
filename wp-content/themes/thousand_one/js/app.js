@@ -644,15 +644,15 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     if(document.querySelector('.search-input')) {
-        if(getCookie('city')) {
-            let cities = document.querySelectorAll('.control-list-city .control-list__link')
-            cities.forEach(el => {
-                let code = el.dataset.code
-                if(code === getCookie('city')) {
-                    document.querySelector('.search-input-city').value = el.textContent
-                }
-            })
-        }
+        // if(getCookie('city')) {
+        //     let cities = document.querySelectorAll('.control-list-city .control-list__link')
+        //     cities.forEach(el => {
+        //         let code = el.dataset.code
+        //         if(code === getCookie('city')) {
+        //             document.querySelector('.search-input-city').value = el.textContent
+        //         }
+        //     })
+        // }
 
         let sendFilters = (data) => {
             sendRequest('POST', 'wp-content/api/service/filters/', data, true, json => {
