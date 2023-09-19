@@ -51,7 +51,13 @@ if (!$services->have_posts()) {
 <section class="services">
 	<div class="services__container">
 		<div class="services-control">
-			<div class="services-control-inputBx"><input id="services-control-input" type="text" data-list=".services-box" placeholder="Введите адрес"></div>
+			<div class="services-control-inputBx">
+                <input id="services-control-input" type="text" data-list=".services-box" placeholder="Введите адрес">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#656F7C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.5 17.5L13.875 13.875" stroke="#656F7C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
 			<!-- /.services-control-inputBx -->
 			<div class="services-control-buttonBx">
 				<button class="services-control-buttonBx__item active">Списком</button>

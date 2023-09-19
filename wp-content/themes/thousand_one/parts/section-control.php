@@ -10,7 +10,7 @@
 				if (!empty($cities)) {
 				?>
 					<div class="control-selectBx">
-						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input">
+						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input search-input-city">
                         <input type="hidden" name="city">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-city">
@@ -63,7 +63,7 @@
 					</div>
 				<?php } ?>
 				<div class="control-selectBx">
-					<a href="#" class="pb control__button">Показать <span>92</span></a>
+					<a href="#" class="pb control__button">Показать <span></span></a>
 				</div>
 			</form>
 			<!-- /.control-box -->
