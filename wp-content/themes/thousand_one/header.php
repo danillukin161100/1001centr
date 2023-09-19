@@ -23,46 +23,70 @@
 </head>
 
 <body <?php body_class() ?>>
-	<div class="_overlay-bg modal-white region">
-		<div class="region-wrapper">
-			<div class="region__container">
-				<div class="region-top">
-					<div class="region__pretitle">Укажите, пожалуйста, ваш регион.</div>
-					<div class="button-close region__cross">
-						<i class="fa-solid fa-xmark"></i>
-					</div>
-					<!-- /.region__cross -->
-				</div>
-				<!-- /.region-top -->
 
-				<?php $current_city = get_term(6, 'city'); ?>
-				<div class="region-cityBx">
-					<p class="region__city" data-city="<?= $current_city->term_id ?>"><?= $current_city->name ?></p>
-					<button class="button-close region__button">Подтвердить</button>
-				</div>
-				<!-- /.region-cityBx -->
-
-				<?php
-				$cities = get_terms([
-					'taxonomy' => 'city',
-					'hide_empty' => false,
-				]);
-				?>
-				<?php if (!empty($cities)) { ?>
-					<div class="region-cities">
-						<?php foreach ($cities as $city) { ?>
-							<div class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
-						<?php } ?>
+	<?php if (empty($_COOKIE['city'])) { ?>
+		<div class="_overlay-bg modal-white region">
+			<div class="region-wrapper">
+				<div class="region__container">
+					<div class="region-top">
+						<div class="region__pretitle">Укажите, пожалуйста, ваш регион.</div>
+						<div class="button-close region__cross">
+							<i class="fa-solid fa-xmark"></i>
+						</div>
+						<!-- /.region__cross -->
 					</div>
-					<!-- /.region-cities -->
-				<?php } ?>
-				<p class="region__notice">Выбором или отказом от выбора региона вы подтверждаете свое совершеннолетие, даете согласие на обработку персональных данных, а также передачу информации от них третьим лицам, соглашаетесь с условиями пользования сайта</p>
+					<!-- /.region-top -->
+
+					<?php $current_city = get_term(6, 'city'); // Москва 
+					?>
+					<div class="region-cityBx">
+						<p class="region__city" data-city="<?= $current_city->term_id ?>"><?= $current_city->name ?></p>
+						<button class="button-close region__button">Подтвердить</button>
+					</div>
+					<!-- /.region-cityBx -->
+
+					<?php
+					$cities = get_terms([
+						'taxonomy' => 'city',
+						'hide_empty' => false,
+						'include' => [
+							12, // Волгоград
+							// Йошкар-ола,
+							72, // Красноярск
+							9, // Новосибирск
+							117, // Ростов-на-дону
+							142, // Тюмень
+							33, // Воронеж
+							10, // Казань
+							6, // Москва
+							101, // Омск
+							4, // Самара
+							145, // Уфа
+							11, // Екатеринбург
+							69, // Краснодар
+							8, // Нижний Новгород
+							108, // Пермь
+							7, // Санкт-Петербург
+							151, // Челябинск
+						]
+					]);
+					?>
+					<?php if (!empty($cities)) { ?>
+						<div class="region-cities">
+							<?php foreach ($cities as $city) { ?>
+								<div class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
+							<?php } ?>
+						</div>
+						<!-- /.region-cities -->
+					<?php } ?>
+					<p class="region__notice">Выбором или отказом от выбора региона вы подтверждаете свое совершеннолетие, даете согласие на обработку персональных данных, а также передачу информации от них третьим лицам, соглашаетесь с условиями пользования сайта</p>
+				</div>
+				<!-- /.region__container -->
 			</div>
-			<!-- /.region__container -->
+			<!-- /.region-wrapper -->
 		</div>
-		<!-- /.region-wrapper -->
-	</div>
-	<!-- /.modal-white region -->
+		<!-- /.modal-white region -->
+	<?php } ?>
 
 	<header class="header">
 		<div class="header__container">
