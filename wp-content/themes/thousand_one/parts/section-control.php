@@ -1,3 +1,10 @@
+<?php
+$cookie_city = null;
+if (!empty($_COOKIE['city'])) {
+	$cookie_city = get_term($_COOKIE['city'], 'city');
+}
+?>
+
 <section class="control">
 	<div class="control__container">
 		<div class="control-inner">
@@ -10,8 +17,8 @@
 				if (!empty($cities)) {
 				?>
 					<div class="control-selectBx">
-						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input search-input-city">
-                        <input type="hidden" name="city">
+						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input" value="<?= (!empty($cookie_city)) ? $cookie_city->name : '' ?>">
+						<input type="hidden" name="city" value="<?= (!empty($cookie_city)) ? $cookie_city->name : '' ?>">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-city">
 							<?php foreach ($cities as $city) { ?>
@@ -31,7 +38,7 @@
 				?>
 					<div class="control-selectBx">
 						<input type="text" placeholder="Все виды техники" data-list=".control-list-technics" class="search-input">
-                        <input type="hidden" name="cat">
+						<input type="hidden" name="cat">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-technics">
 							<?php foreach ($categories as $cat) { ?>
@@ -51,7 +58,7 @@
 				?>
 					<div class="control-selectBx">
 						<input type="text" placeholder="Все производители" data-list=".control-list-brands" class="search-input">
-                        <input type="hidden" name="firm">
+						<input type="hidden" name="firm">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-brands">
 							<?php foreach ($firms as $firm) { ?>

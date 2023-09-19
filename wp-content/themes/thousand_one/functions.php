@@ -134,6 +134,22 @@ add_action('wp_enqueue_scripts', function () {
 	wp_enqueue_script('thousand_one-app', get_template_directory_uri() . '/js/app.js', array(), _S_VERSION, true);
 });
 
+/**
+ * Function for `plugins_loaded` action-hook.
+ * 
+ * @return void
+ */
+// add_action('plugins_loaded', function () {
+// 	die('__1__');
+// 	if (!empty($_COOKIE['city'])) {
+// 		$cookie_city = get_term($_COOKIE['city'], 'city');
+// 		set_query_var('city', $cookie_city->slug);
+
+// 		// var_dump(get_query_var('city'));
+// 		var_dump($cookie_city);
+// 	}
+// });
+
 /* Функция для форматирования телефона в ссылку */
 function phoneLink($phone)
 {
@@ -183,21 +199,21 @@ function getMetaTag($tag)
 		$cat = get_query_var('categories', 'all_categories');
 		$firm = get_query_var('firms', 'all_firms');
 		$result = 'Сервисные центры';
-        $result_city = null;
+		$result_city = null;
 		if ($city != 'all_cities') {
 			$city = get_term_by('slug', $city, 'city');
 			$city_label = (!empty(get_field('variant_2', $city))) ? get_field('variant_2', $city) : $city->name;
 			$result_city = ' в ' . $city_label;
 		}
 
-        $result_cat = null;
+		$result_cat = null;
 		if ($cat != 'all_categories') {
 			$cat = get_term_by('slug', $cat, 'categories');
 			$cat_label = (!empty(get_field('variant_2', $cat))) ? get_field('variant_2', $cat) : $cat->name;
 			$result_cat = ' по ремонту ' . $cat_label;
 		}
 
-        $result_firm = null;
+		$result_firm = null;
 		if ($firm != 'all_firms') {
 			$firm = get_term_by('slug', $firm, 'firms');
 			$result_firm = ' ' . $firm->name;
