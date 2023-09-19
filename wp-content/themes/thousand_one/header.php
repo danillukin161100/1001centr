@@ -1,3 +1,10 @@
+<?php
+// header('content-type: text/plain');
+// global $wp_query;
+// print_r($wp_query->query_vars);
+// die();
+?>
+
 <!doctype html>
 <html lang="ru">
 <!-- ajsdhvsasjdhva -->
