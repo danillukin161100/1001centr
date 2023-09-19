@@ -9,10 +9,7 @@
 				]);
 				$cookie_city = (!empty($_COOKIE['city'])) ? get_term($_COOKIE['city'], 'city') : null;
 				$city_var = (!empty(get_query_var('city'))) ? get_term_by('slug', get_query_var('city'), 'city') : null;
-				$city_result = null;
-				if (!empty($cookie_city) || !empty($city_var)) {
-					$city_result = ($city_var != $cookie_city) ? $city_var : $cookie_city;
-				}
+				$city_result = (empty($city_var)) ? $cookie_city : $city_var;
 				if (!empty($cities)) {
 				?>
 					<div class="control-selectBx">
