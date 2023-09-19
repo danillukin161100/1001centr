@@ -17,7 +17,7 @@ if (!empty($_COOKIE['city'])) {
 				if (!empty($cities)) {
 				?>
 					<div class="control-selectBx">
-						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input" value="<?= (!empty($cookie_city)) ? $cookie_city->name : '' ?>">
+						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input search-input-city" value="<?= (!empty($cookie_city)) ? $cookie_city->name : '' ?>">
 						<input type="hidden" name="city" value="<?= (!empty($cookie_city)) ? $cookie_city->name : '' ?>">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-city">
