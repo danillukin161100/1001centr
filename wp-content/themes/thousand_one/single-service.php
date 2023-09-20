@@ -51,7 +51,7 @@ $address = get_field('address');
 					<div class="section_white about-inner">
 						<p class="title about__title">О сервисе</p>
 						<?php if ($content = get_the_content()) { ?>
-							<p class="about__desc"><?= $content ?></p>
+							<div class="about__desc"><?= apply_filters('the_content', $content) ?></div>
 						<?php } ?>
 						<!-- /.about__desc -->
 						<div class="about-box">

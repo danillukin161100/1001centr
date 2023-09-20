@@ -2,6 +2,7 @@
 $categories = get_terms([
 	'taxonomy' => 'categories',
 	// 'hide_empty' => false, /* показывать путсые категории */
+	'exclude' => [587],
 ]);
 
 if (empty($categories)) {

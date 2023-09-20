@@ -218,6 +218,33 @@ add_action('after_setup_theme', function () {
 		return $dir_url . $image_path;
 	}
 
+	/* Получить URL на бренд */
+	function getFirmsPermalink($firm)
+	{
+		if (gettype($firm) == 'integer') {
+			$firm = get_term($firm, 'firms');
+		}
+
+		$city_slug = get_query_var('city', 'all_cities');
+		$cat_slug = get_query_var('categories', 'all_categories');
+
+		if ($city_slug == 'all_cities' && !empty($_COOKIE['city'])) {
+			$cookie_city = get_term($_COOKIE['city'], 'city');
+			$city_slug = $cookie_city->slug;
+		}
+
+		$url = '/services/' . $firm->slug;
+
+		if ($city_slug != 'all_cities') {
+			$url .= '/' . $city_slug;
+		}
+		if ($cat_slug != 'all_categories') {
+			$url .= '/' . $cat_slug;
+		}
+
+		return $url;
+	}
+
 	/* Получить URL на город */
 	function getCitiesPermalink($city)
 	{
@@ -225,7 +252,13 @@ add_action('after_setup_theme', function () {
 			$city = get_term($city, 'city');
 		}
 
-		$url = '/services/' . $city->slug;
+		$firm_slug = get_query_var('firms', 'all_firms');
+		$cat_slug = get_query_var('categories', 'all_categories');
+		$url = '/services/' . $firm_slug . '/' . $city->slug;
+		
+		if ($cat_slug != 'all_categories') {
+			$url .= '/' . $cat_slug;
+		}
 
 		return $url;
 	}
@@ -245,26 +278,6 @@ add_action('after_setup_theme', function () {
 		}
 
 		$url = '/services/' . $city_slug . '/' . $cat->slug;
-
-		return $url;
-	}
-
-	/* Получить URL на бренд */
-	function getFirmsPermalink($firm)
-	{
-		if (gettype($firm) == 'integer') {
-			$firm = get_term($firm, 'firms');
-		}
-
-		$city_slug = get_query_var('city', 'all_cities');
-		$cat_slug = get_query_var('categories', 'all_categories');
-
-		if ($city_slug == 'all_cities' && !empty($_COOKIE['city'])) {
-			$cookie_city = get_term($_COOKIE['city'], 'city');
-			$city_slug = $cookie_city->slug;
-		}
-
-		$url = '/services/' . $city_slug . '/' . $cat_slug . '/' . $firm->slug;
 
 		return $url;
 	}

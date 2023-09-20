@@ -6,18 +6,28 @@ if (!current_user_can('administrator')) {
 	header('Location: /');
 }
 
-$firms = get_terms([
-	'taxonomy' => 'firms',
-	'hide_empty' => false,
-]);
+// $services = new WP_Query([
+// 	'post_type' => 'service',
+// 	'posts_per_page' => -1,
+// 	'include' => [2963, 2965],
+// ]);
 
-foreach ($firms as $firm) {
-	$image_path = getFirmImageName($firm->term_id, 1);
-	// $is_exist = file_exists(getFirmImageName($firm->term_id, 1));
-	// var_dump($is_exist);
-	$is_exist = (file_exists(get_template_directory() . $image_path)) ? 'TRUE' : 'FALSE';
-	// echo $firm->name . PHP_EOL;
-	// echo 'http://l92235wp.beget.tech/wp-admin/term.php?taxonomy=firms&tag_ID=' . $firm->term_id . '&post_type=service&wp_http_referer=%2Fwp-admin%2Fedit-tags.php%3Ftaxonomy%3Dfirms%26post_type%3Dservice' . PHP_EOL;
-	// echo $is_exist . PHP_EOL;
-	echo preg_replace('/\/images\/logo\//', '/', $image_path) . PHP_EOL;
-}
+// if ($services->have_posts()) {
+// 	foreach ($services->posts as $key => $service) {
+// 		$_phones = get_post_meta($service->ID, '_phones', 'field_64f73786918c5');
+// 		if (empty($_phones)) {
+// 			$update = update_post_meta($service->ID, '_phones', 'field_64f73786918c5');
+// 			var_dump($update);
+// 		}
+// 	}
+// }
+// wp_reset_query();
+
+
+// $c_service = get_post(2963);
+// $e_service = get_post(2965);
+
+// update_post_meta($e_service->ID, '_phones', 'field_64f73786918c5');
+
+// print_r(get_post_meta($c_service->ID, '_phones'));
+// print_r(get_post_meta($e_service->ID, '_phones'));
