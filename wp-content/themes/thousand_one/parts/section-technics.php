@@ -4,7 +4,7 @@ $categories = get_terms([
 ]);
 $iteration = (isset($_GET['cat_iteration'])) ? $_GET['cat_iteration'] : 1;
 $iteration--;
-$step = 8;
+$step = 12;
 $start = $step * $iteration;
 $end = $start + $step - 1;
 
@@ -29,7 +29,10 @@ if (empty($categories)) return false;
 				<?php } ?>
 			</div>
 			<!-- /.technics-box -->
-			<button class="technics__more">Показать еще</button>
+
+			<?php if (count($categories) > ($end + 1)) { ?>
+				<button class="technics__more">Показать еще</button>
+			<?php } ?>
 		</div>
 	</div>
 	<!-- /.technics__container -->
