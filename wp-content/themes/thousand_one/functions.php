@@ -270,6 +270,7 @@ add_action('after_setup_theme', function () {
 			$cat = get_term($cat, 'categories');
 		}
 
+		$firm_slug = get_query_var('firms', 'all_firms');
 		$city_slug = get_query_var('city', 'all_cities');
 
 		if ($city_slug == 'all_cities' && !empty($_COOKIE['city'])) {
@@ -277,7 +278,7 @@ add_action('after_setup_theme', function () {
 			$city_slug = $cookie_city->slug;
 		}
 
-		$url = '/services/' . $city_slug . '/' . $cat->slug;
+		$url = '/services/' . $firm_slug . '/' . $city_slug . '/' . $cat->slug;
 
 		return $url;
 	}

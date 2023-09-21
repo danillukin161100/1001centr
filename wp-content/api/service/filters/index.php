@@ -70,7 +70,7 @@ $services = new WP_Query($args);
 if ($services->have_posts()) {
 	$result['success'] = true;
 	$result['count'] = count($services->posts);
-	$result['link'] = get_home_url() . '/services/' . $city_url . '/' . $cat_url . '/' . $firm_url;
+	$result['link'] = get_home_url() . '/services/' . $firm_url . '/' . $city_url . '/' . $cat_url;
 	unset($result['message']);
 }
 
