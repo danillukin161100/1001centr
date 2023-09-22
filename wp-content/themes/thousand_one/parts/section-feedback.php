@@ -3,18 +3,16 @@
 		<div class="feedback-box">
 			<div class="feedback__item">
 				<p class="title feedback__item-title">Задайте интересующий вопрос мастеру напрямую</p>
-				<p class="feedback__item-subtitle">Отправьте ваш запрос через форму</p>
+				<p class="feedback__item-subtitle">Отправьте запрос через форму и мы передадим заявку в сервис, который готов помочь в ближайшее время</p>
 				<button class="pb feedback__item-button" data-type="repair">Написать мастеру</button>
-				<img src="<?= get_template_directory_uri() ?>/images/feedback/man.svg" alt="" class="feedback__item-img">
 			</div>
-			<button class="pb feedback__item-button mobile" data-type="repair">Написать мастеру</button>
 			<div class="feedback__item">
 				<p class="title feedback__item-title">Горячая линия мастеров по ремонту техники</p>
-				<p class="feedback__item-subtitle">Получите консультацию от специалистов</p>
-				<button class="pb feedback__item-button" data-type="repair">Позвонить мастеру</button>
-				<img src="<?= get_template_directory_uri() ?>/images/feedback/girl.svg" alt="" class="feedback__item-img">
+				<p class="feedback__item-subtitle">Позвоните нам на горячую линию и получите консультацию от специалистов</p>
+                <a href="tel: +7 (969) 999-42-80" class="pb feedback__item-button" data-type="repair">
+                    <span><img src="<?= get_template_directory_uri() ?>/images/services/phone.svg" alt=""></span><span>+7 (969) 999-42-80</span>
+                </a>
 			</div>
-			<button class="pb feedback__item-button mobile" data-type="repair">Написать мастеру</button>
 		</div>
 		<!-- /.feedback-inner -->
 	</div>

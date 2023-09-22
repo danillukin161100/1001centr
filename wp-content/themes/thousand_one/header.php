@@ -32,7 +32,7 @@
 <body <?php body_class() ?>>
 
 	<?php if (empty($_COOKIE['city'])) { ?>
-		<div class="_overlay-bg modal-white region">
+		<div class="_overlay-bg modal-white region _is-open">
 			<div class="region-wrapper">
 				<div class="region__container">
 					<div class="region-top">

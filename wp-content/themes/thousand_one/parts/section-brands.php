@@ -11,7 +11,7 @@ $end = $start + $step - 1;
 if (empty($firms)) return false;
 ?>
 
-<section class="brands">
+<section class="brands" data-more="firm">
 	<div class="brands__container">
 		<h2 class="title brands__title">Бренд вашей техники</h2>
 		<div class="brands-box">
@@ -27,7 +27,7 @@ if (empty($firms)) return false;
 			<?php } ?>
 		</div>
 		<!-- /.brands-box -->
-		<button class="brands__button">Показать ещё</button>
+		<button class="brands__button" data-page="1">Показать ещё</button>
 		<!-- /.brands__button -->
 	</div>
 	<!-- /.brands__container -->

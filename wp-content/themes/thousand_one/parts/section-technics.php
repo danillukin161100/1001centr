@@ -11,7 +11,7 @@ $end = $start + $step - 1;
 if (empty($categories)) return false;
 ?>
 
-<section class="technics">
+<section class="technics" data-more="cat">
 	<div class="technics__container">
 		<h2 class="title technics__title">Сервисы по видам техники</h2>
 		<!-- /.technics__title title -->
@@ -29,7 +29,7 @@ if (empty($categories)) return false;
 				<?php } ?>
 			</div>
 			<!-- /.technics-box -->
-			<button class="technics__more">Показать еще</button>
+			<button class="technics__more" data-page="1">Показать еще</button>
 		</div>
 	</div>
 	<!-- /.technics__container -->

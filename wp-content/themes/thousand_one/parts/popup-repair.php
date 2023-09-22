@@ -1,8 +1,7 @@
 <div class="_overlay-bg modal repair" data-popup="repair">
 	<div class="repair-formBx">
 		<div class="title repair__title">Заявка на ремонт техники</div>
-		<div class="repair__subtitle">Оставьте данные и мы передадим заявку в сервисный центр, который будет готов оказать нужную вам услугу
-			<br> в ближайшее время
+		<div class="repair__subtitle">Оставьте данные и мы передадим заявку в сервисный центр, который окажет вам услугу в ближайшее время.
 		</div>
 		<!-- /.repair__subtitle -->
 		<form action="#" class="repair-form">

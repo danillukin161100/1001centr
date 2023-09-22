@@ -236,7 +236,7 @@ class SwipeablePopup {
 
     }
 }
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
     // установка куки текущего города
     if(document.querySelector('.region-cities')) {
         let cities = document.querySelector('.region-cities'),
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function(){
         })
     }
 
-    if(document.querySelector('.services')) {
+    if(document.querySelector('#map')) {
         ymaps.ready(init);
         function init(){
             // Создание карты.
@@ -586,9 +586,10 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
 
-    if(document.querySelector('.modal.repair')) {
+    if(document.querySelector('.modal')) {
         if(window.innerWidth <= 768) {
             let swipeableRepair = new SwipeablePopup('.repair-formBx', '.repair')
+            let swipeableQuestion = new SwipeablePopup('.question-formBx', '.repair')
         }
     }
     if(document.querySelector('.services__item')) {
@@ -628,6 +629,31 @@ document.addEventListener('DOMContentLoaded', function(){
         })
     }
 
+    if(document.querySelector('[data-more]')){
+        let sectionsButton = document.querySelectorAll('[data-more] button')
+        sectionsButton.forEach(button => {
+            button.addEventListener('click', () => {
+                let iterationNmae = button.closest('[data-more]').dataset.more,
+                    page = parseInt(button.dataset.page)
+                sendRequest('GET', `${location.href}?${iterationNmae}_iteration=${++page}`, '', 'html', data => {
+                    // Парсим полученный HTML-код в jQuery объект
+                    const $loadedContent = $('<div>').html(data);
+
+                    // Найдем элемент #content-to-append в загруженном содержимом
+                    const $contentToAppend = $loadedContent.find(`.${button.previousElementSibling.firstElementChild.classList[0]}`);
+
+                    if($contentToAppend.length === 0) {
+                        button.style.display = 'none'
+                        return false;
+                    }
+                    button.dataset.page = button.dataset.page + 1
+                    // Добавим $contentToAppend к #technics-box
+                    $(`.${button.previousElementSibling.classList[0]}`).append($contentToAppend);
+                })
+            })
+        })
+    }
+
     document.addEventListener('mouseup', function(evt) {
         if(document.querySelector('.search-input')) {
             let inputs = document.querySelectorAll('.search-input')
@@ -644,18 +670,18 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     if(document.querySelector('.search-input')) {
-        // if(getCookie('city')) {
-        //     let cities = document.querySelectorAll('.control-list-city .control-list__link')
-        //     cities.forEach(el => {
-        //         let code = el.dataset.code
-        //         if(code === getCookie('city')) {
-        //             document.querySelector('.search-input-city').value = el.textContent
-        //         }
-        //     })
-        // }
+        if(getCookie('city')) {
+            let cities = document.querySelectorAll('.control-list-city .control-list__link')
+            cities.forEach(el => {
+                let code = el.dataset.code
+                if(code === getCookie('city')) {
+                    document.querySelector('.search-input-city').value = el.textContent
+                }
+            })
+        }
 
         let sendFilters = (data) => {
-            sendRequest('POST', 'wp-content/api/service/filters/', data, true, json => {
+            sendRequest('POST', `${location.protocol}//${location.hostname}/wp-content/api/service/filters/`, data, 'json', json => {
                 if(json.link) {
                     let countFilter = document.querySelector('.control__button')
                     countFilter.querySelector('span').textContent = json.count
@@ -690,6 +716,21 @@ document.addEventListener('DOMContentLoaded', function(){
                     sendFilters(generateFilterData())
                 }
             })
+        })
+    }
+
+    if(document.querySelector('.guide')) {
+        let cityButtonMore = document.querySelector('.js-button-city')
+        cityButtonMore.addEventListener('click', () => {
+            if(cityButtonMore.parentNode.querySelector('.guide-wrapper').classList.contains('show')) {
+                cityButtonMore.parentNode.querySelector('.guide-wrapper').classList.remove('show')
+                animateToBlock('.guide')
+                cityButtonMore.textContent = 'Показать список городов'
+            }else{
+                cityButtonMore.parentNode.querySelector('.guide-wrapper').classList.add('show')
+                animateToBlock('.guide-wrapper')
+                cityButtonMore.textContent = 'Скрыть список городов'
+            }
         })
     }
 });
@@ -770,6 +811,12 @@ $('.svg img').each(function () {
 
 });
 
+let animateToBlock = (selector) => {
+    $('html, body').stop().animate({
+        scrollTop: $(selector).offset().top - 100
+    }, 700);
+}
+
 // Функция для установки куки
 let setCookie = (name, value, days) => {
     let expires = "";
@@ -800,14 +847,13 @@ let getCookie = (name) => {
     return null;
 }
 
-function sendRequest(type = 'POST', link, data, processData = true,  callback = json => {}) {
-    console.log(data)
+function sendRequest(type = 'POST', link, data, dataType = 'json',  callback = json => {}) {
     $.ajax({
         type: type,
-        url: `${location.protocol}//${location.hostname}/${link}`,
+        url: `${link}`,
         data: data ? data : '',
-        dataType: "json",
-        processData: processData,
+        dataType: dataType,
+        processData: true,
         contentType: 'application/json',
         success: function (response) {
             callback(response)

@@ -9,10 +9,6 @@
 				<!-- /.content__subtitle -->
 			</div>
 			<!-- /.content-main -->
-			<div class="content-imgBx">
-				<img src="<?= get_template_directory_uri() ?>/images/content/main.svg" alt="">
-			</div>
-			<!-- /.content-imgBx -->
 		</div>
 		<!-- /.content-inner -->
 	</div>

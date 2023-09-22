@@ -52,6 +52,7 @@
 
 <?php get_template_part('parts/popup', 'catalog') ?>
 <?php get_template_part('parts/popup', 'repair') ?>
+<?php get_template_part('parts/popup', 'question') ?>
 
 
 <?php wp_footer() ?>

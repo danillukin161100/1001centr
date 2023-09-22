@@ -8,16 +8,32 @@
  * @package thousand_one
  */
 
-get_header();
+//get_header();
 ?>
 
-<section class="not_found">
-	<div class="not_found__container">
+    <header class="header">
+        <div class="header__container">
+            <div class="header-inner">
+                <div class="header-logoBx" style="margin: 0 auto;">
+                    <a href="" class="header__logo">
+                        <img src="<?= get_template_directory_uri() ?>/images/header/logo.svg" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
 
-		<h1 class="content__title">Страница не найдена</h1>
-		<p class="content__subtitle">К сожалению такой страницы не существует. <a href="/">Перейти на главную.</a></p>
-	</div>
-</section>
-
-<?php
-get_footer();
+        <section class="not_found">
+            <div class="not_found__container">
+                <div class="not_found-inner">
+                    <!-- /.not_found-inner -->
+                    <img class="not_found__img" src="<?= get_template_directory_uri() ?>/images/content/main.svg" alt="">
+                    <h1 class="not_found__title">Ошибка 404</h1>
+                    <p class="content__subtitle not_found__subtitle">Страница, которую вы запрашиваете, не существует.</p>
+                    <a href="/" class="not_found__back pb">Вернуться на главную</a>
+                    <!-- /.not_found__back -->
+                </div>
+            </div>
+        </section>
+    </main>
