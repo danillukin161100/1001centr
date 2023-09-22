@@ -11,6 +11,7 @@
 /* Icnludes */
 require_once __DIR__ . '/inc/FooterWalkerNavMenu.php';
 require_once __DIR__ . '/inc/routes.php';
+require_once __DIR__ . '/inc/redirects.php';
 
 /* Version */
 if (!defined('_S_VERSION')) {
@@ -255,7 +256,7 @@ add_action('after_setup_theme', function () {
 		$firm_slug = get_query_var('firms', 'all_firms');
 		$cat_slug = get_query_var('categories', 'all_categories');
 		$url = '/services/' . $firm_slug . '/' . $city->slug;
-		
+
 		if ($cat_slug != 'all_categories') {
 			$url .= '/' . $cat_slug;
 		}
