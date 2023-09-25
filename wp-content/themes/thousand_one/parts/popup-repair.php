@@ -21,8 +21,8 @@
 			<!-- /.repair-inputBx -->
 			<button class="pb repair__button">Отправить</button>
 		</form>
-		<p class="repair__notice">Нажимая на кнопку «Отправить», вы даете согласие на обработку персональных данных и соглашаетесь c
-			<a href="#">политикой конфиденциальности</a>
+		<p class="repair__notice">
+			Нажимая на кнопку «Отправить», вы соглашаетесь на обработку персональных данных и <a href="<?= get_privacy_policy_url() ?>">политикой конфиденциальности</a>
 		</p>
 		<!-- /.repair__notice -->
 		<div class="button-close repair__cross">
