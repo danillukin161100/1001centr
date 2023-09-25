@@ -30,6 +30,7 @@ add_action('init', function () {
 
 	// $query_url = str_replace('/services/', '', $_SERVER['REQUEST_URI']);
 	$query_url = trim($_SERVER['REQUEST_URI'], '/');
+	$query_url = strtolower($query_url);
 	$query_url = explode('/', $query_url);
 
 	$is_redirect = false;
