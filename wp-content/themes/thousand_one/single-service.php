@@ -19,7 +19,7 @@ if (($cities = get_the_terms(get_the_ID(), 'city')) && !empty($cities)) {
 }
 $address = get_field('address');
 ?>
-<section class="service">
+<section class="service" data-service-id="<?= get_the_ID() ?>">
 	<div class="service__container">
 		<div class="service-inner">
 			<div class="service-main">

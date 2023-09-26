@@ -78,7 +78,7 @@ $services = new WP_Query($args);
 					<div class="_overlay-bg services-map-helper">
 						<div class="services-map-box">
 							<?php while ($services->have_posts()) : $services->the_post(); ?>
-								<div class="services__item">
+								<div class="services__item" data-service-id="<?= get_the_ID() ?>">
 									<div class="services__item-titleBx">
 										<?php if (get_field('moder')) { ?>
 											<img src="<?= get_template_directory_uri() ?>/images/services/check.svg" alt="">
