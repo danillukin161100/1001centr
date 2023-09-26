@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if(document.querySelector('.services-box')) {
         let pageSize = window.innerWidth > 768 ? 12
-                                               : 8
+            : 8
         $('#demo').pagination({
             // dataSource: function(done){
             //     $.ajax({
@@ -366,24 +366,61 @@ document.addEventListener('DOMContentLoaded', function() {
                     clusterDisableClickZoom: true
                 })
 
+
+            //функция установки центра относительно всех точек на карте
+            // Функция для установки центра карты по средним координатам
+            let setMapCenter = (map, coordinatesArray) => {
+                let sumLat = 0;
+                let sumLon = 0;
+
+                // Рассчитываем сумму координат
+                for (let i = 0; i < coordinatesArray.length; i++) {
+                    let coords = coordinatesArray[i];
+                    sumLat += parseFloat(coords[0]);
+                    sumLon += parseFloat(coords[1]);
+                }
+
+                // Рассчитываем средние координаты
+                let avgLat = sumLat / coordinatesArray.length;
+                let avgLon = sumLon / coordinatesArray.length;
+
+                map.setCenter([avgLon, avgLat]);
+            }
+
+
             let myCollection = new ymaps.GeoObjectCollection();
-            let arr_adress = [];
-            $.ajax({
-                url: "static/map.json"
-            }).done(function(data) {
+            let address = document.querySelectorAll('.services__item-info-address'),
+                addressArr = []
 
+            //перебор всех адресов и получение точек на карте
+            address.forEach(item => {
                 let results = [];
-                data.points.forEach(function(item, index) {
-                    results.push(createPlacemark(item));
-                });
-                data.points.forEach(function(item, index) {
-                    arr_adress.push(item);
-                });
-                myMap.geoObjects.add(myCollection);
-                myMap.geoObjects.add(objectManager);
-            });
+                let obj = {}
 
-            // Создать метку
+                sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=06f41e63-609d-4d88-9c55-cf2900572996&geocode=${item.dataset.city}${item.textContent.trim()}&format=json`,false, 'json', json => {
+                    let [y, x] = json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ')
+                    addressArr.push(json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' '))
+                    obj = {
+                        "infoPoint": "<svg class='services__icon {% if properties.active %} active{% endif %}' width='44' height='53' viewBox='0 0 44 53' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(#filter0_d_246_59)'><circle cx='22.4547' cy='22.455' r='7.72745' fill='white'/><path d='M38.3127 29.5423L38.3127 29.5424L38.3172 29.5335C39.1242 27.9544 39.0612 25.915 37.7376 24.3296C36.8789 23.3011 36.889 21.8027 37.7614 20.7859C40.272 17.8596 38.4271 13.3196 34.587 12.974C33.2526 12.8539 32.2002 11.7873 32.0981 10.4514C31.8041 6.60696 27.2893 4.70121 24.3296 7.1722C23.3011 8.03086 21.8027 8.02078 20.7859 7.14837C17.8596 4.63781 13.3196 6.48268 12.974 10.3228C12.8539 11.6572 11.7873 12.7096 10.4514 12.8117C6.60696 13.1057 4.70121 17.6205 7.1722 20.5802C8.03086 21.6087 8.02078 23.107 7.14837 24.1239C5.4001 26.1617 5.77148 28.9705 7.42392 30.6029L19.9202 46.7551C21.2033 48.4135 23.7065 48.4153 24.9918 46.7586L37.3829 30.7883L37.3841 30.787C37.4023 30.7668 37.4279 30.7382 37.459 30.703C37.5209 30.633 37.606 30.535 37.6985 30.4236C37.8651 30.223 38.1198 29.9036 38.2726 29.6188L38.2726 29.6188L38.2772 29.61L38.3127 29.5423ZM29.1823 22.4549C29.1823 26.1704 26.1704 29.1823 22.4549 29.1823C18.7394 29.1823 15.7274 26.1704 15.7274 22.4549C15.7274 18.7394 18.7394 15.7274 22.4549 15.7274C26.1704 15.7274 29.1823 18.7394 29.1823 22.4549Z' fill='#0D2938' stroke='white' stroke-width='2'/></g><defs><filter id='filter0_d_246_59' x='0.998779' y='0.99707' width='42.9138' height='52.0029' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/><feOffset/><feGaussianBlur stdDeviation='2'/><feComposite in2='hardAlpha' operator='out'/><feColorMatrix type='matrix' values='0 0 0 0 0.0197222 0 0 0 0 0.0666667 0 0 0 0 0.0407323 0 0 0 0.12 0'/><feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow_246_59'/><feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow_246_59' result='shape'/></filter></defs></svg>",
+                        "help": item.textContent,
+                        "latitude": x,
+                        "longitude": y
+                    }
+                    results.push(createPlacemark(obj));
+
+                    if (addressArr.length === address.length) {
+                        setMapCenter(myMap, addressArr);
+                    }
+                })
+                // data.points.forEach(function(item, index) {
+                //     arr_adress.push(item);
+                // });
+            })
+
+            myMap.geoObjects.add(myCollection);
+            myMap.geoObjects.add(objectManager);
+
+            // Функция создания метки
             function createPlacemark(item) {
                 let squareLayout = ymaps.templateLayoutFactory.createClass(item.infoPoint);
                 let place = new ymaps.Placemark(
@@ -405,6 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             let thatCoordinates;
+            //обработка нажатия
             myCollection.events.add('click', function (e) {
                 //myCollection.get('target').properties.set('active', false);
                 let that = e.get('target').properties.get('active');
@@ -505,14 +543,10 @@ document.addEventListener('DOMContentLoaded', function() {
             y =$(".js-map").data('y') === undefined ? 0 : $(".js-map").data('y')
 
         if(!x || !y) {
-            // $.ajax({
-            //     url: 'https://geocode-maps.yandex.ru/1.x?apikey=4a37db78-ee1a-4edb-a0c7-c9f4cb3c3d6f',
-            //     method: 'get',
-            //     dataType: 'json',
-            //     success: function(data){
-            //         console.log(data)
-            //     }
-            // });
+            let address = document.querySelector('.service-info__item-address').textContent.trim()
+            sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=06f41e63-609d-4d88-9c55-cf2900572996&geocode=${address}&format=json`,false, 'json', json => {
+                [y, x] = json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ')
+            })
         }
 
         ymaps.ready(init);
@@ -693,7 +727,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.querySelectorAll('.search-input').forEach(input => {
             input.addEventListener('change', (e) => {
-                if(!e.target.value) return false;
+                if(!e.target.value) {
+                    e.target.parentNode.querySelector('input[type="hidden"]').value = ''
+                    return false;
+                }
                 let list = e.target.parentNode.querySelector('.control-list'),
                     $li = list.querySelector('li:not([style="display: none;"])')
                 if($li) {
@@ -744,15 +781,15 @@ function simpleTemplating(data) {
                     <a href="${item.service_link}" class="services__item-titleBx"><img src="${item.check_link}" alt="">
                         <p class="services__item-title">${item.name}</p>
                     </a>
-                    ${item.svgsIcon[0] === null ? '' 
-                                                : `<div class="services__item-info"><img src="${item.svgsIcon[0].currentSrc}" alt="">
+                    ${item.svgsIcon[0] === null ? ''
+            : `<div class="services__item-info"><img src="${item.svgsIcon[0].currentSrc}" alt="">
                                                         <div class="services__item-info-main">
                                                             <p>${item.address}</p>
                                                         </div>
                                                     </div>`}
                     
-                    ${item.svgsIcon[1] === null ? '' 
-                                                : `<div class="services__item-info"><img src="${item.svgsIcon[1].currentSrc}" alt="">
+                    ${item.svgsIcon[1] === null ? ''
+            : `<div class="services__item-info"><img src="${item.svgsIcon[1].currentSrc}" alt="">
                                                     <div class="services__item-info-main">
                                                         <p>
                                                             Пн-Пт: 10:00 - 21:00 <br>
@@ -865,10 +902,11 @@ let generateFilterData = (sectionOfInput) => {
     let formData = {};
 
     $('input[type="hidden"]').each(function() {
-        formData[$(this).attr('name')] = $(this).val() === '' ? false : parseInt($(this).val());
+        formData[$(this).attr('name')] = $(this).val() == '' ? false : parseInt($(this).val());
     });
     return JSON.stringify(formData)
 }
+
 
 // Паралакс мышей ========================================================================================
 // const mousePrlx = new MousePRLX({})

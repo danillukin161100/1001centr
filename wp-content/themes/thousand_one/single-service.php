@@ -44,7 +44,7 @@ $address = get_field('address');
 					</div>
 					<!-- /.service-titleBx -->
 					<div class="service-map">
-						<div id="service-map" class="js-map" data-addr="Hardwarespb" data-x="59.84" data-y="30.2"></div>
+						<div id="service-map" class="js-map" data-addr="Hardwarespb"></div>
 					</div>
 				</div>
 				<div class="section_m about">
@@ -184,7 +184,7 @@ $address = get_field('address');
 									<path d="M10 10.8335C11.3807 10.8335 12.5 9.71421 12.5 8.3335C12.5 6.95278 11.3807 5.8335 10 5.8335C8.61929 5.8335 7.5 6.95278 7.5 8.3335C7.5 9.71421 8.61929 10.8335 10 10.8335Z" stroke="#0D2938" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 								</svg>
 							</div>
-							<div class="service-info__item-content">
+							<div class="service-info__item-content service-info__item-address">
 								г.<?= $city->name ?>, <?= $address ?>
 							</div>
 						</div>

@@ -14,7 +14,7 @@
 				?>
 					<div class="control-selectBx">
 						<input type="text" placeholder="Все города" data-list=".control-list-city" class="search-input search-input-city" value="<?= (!empty($city_result)) ? $city_result->name : '' ?>">
-						<input type="hidden" name="city" value="<?= (!empty($city_result)) ? $city_result->name : '' ?>">
+						<input type="hidden" name="city" value="<?= (!empty($city_result)) ? $city_result->term_id : '' ?>">
 						<!-- /.header-citiesBx-inputBX -->
 						<ul class="control-list control-list-city">
 							<?php foreach ($cities as $city) { ?>
