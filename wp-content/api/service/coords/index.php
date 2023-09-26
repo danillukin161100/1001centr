@@ -2,14 +2,14 @@
 header('Content-Type: application/json');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
 
-// $data = file_get_contents('php://input');
-// $data = json_decode($data);
+$data = file_get_contents('php://input');
+$data = json_decode($data, true);
 
-$data = [
-	'service_id' => 2848,
-	'x' => 100.312312312,
-	'y' => 100.312312312,
-];
+// $data = [
+// 	'service_id' => 2848,
+// 	'x' => 100.312312312,
+// 	'y' => 100.123,
+// ];
 
 $result = [
 	'success' => false,
@@ -49,8 +49,16 @@ if (empty($service)) {
 }
 
 $coords = $data['x'] . '|' . $data['y'];
+$old_coords = get_field('coords', $data['service_id']);
 
-if (update_field('coords', $coords)) {
+if ($coords == $old_coords) {
+	$result['success'] = true;
+	$result['message'] = 'Новый данные совпадают с имеющимися';
+	echo json_encode($result, 320);
+	die();
+}
+
+if ($update = update_field('coords', $coords, $data['service_id'])) {
 	$result['success'] = true;
 	$result['message'] = 'Координаты успешно обновлены';
 }
