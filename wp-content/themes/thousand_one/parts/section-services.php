@@ -91,7 +91,6 @@ $services = new WP_Query($args);
 										if (($cities = get_the_terms(get_the_ID(), 'city')) && !empty($cities)) {
 											$city = array_shift($cities);
 										}
-										var_dump($city->name);
 										?>
 										<div class="services__item-info address"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
 											<div class="services__item-info-main">
