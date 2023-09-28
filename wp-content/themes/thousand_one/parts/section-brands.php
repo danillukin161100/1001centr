@@ -21,7 +21,7 @@ if (empty($firms)) return false;
 				<a href="<?= get_term_link($firm) ?>" class="brands__item">
 				*/ ?>
 				<a href="<?= getFirmsPermalink($firm) ?>" class="brands__item">
-					<img data-src="<?= getFirmImageName($firm->term_id) ?>" src="<?= kama_thumb_src('w=200&h=120&crop=0', getFirmImageName($firm->term_id)) ?>" alt="">
+					<img data-src="<?= getFirmImageName($firm->term_id, 1) ?>" src="<?= kama_thumb_src('w=200&h=120&crop=0', getFirmImageName($firm->term_id)) ?>" alt="">
 				</a>
 				<?php if ($key >= $end) break; ?>
 			<?php } ?>
