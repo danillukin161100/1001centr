@@ -156,6 +156,7 @@ add_action('after_setup_theme', function () {
 				$city = get_term_by('slug', $city, 'city');
 				$city_label = (!empty(get_field('variant_2', $city))) ? get_field('variant_2', $city) : $city->name;
 				$result_city = ' в ' . $city_label;
+				// $result_city = mb_strtolower($result_city);
 			}
 
 			$result_cat = null;
@@ -163,6 +164,9 @@ add_action('after_setup_theme', function () {
 				$cat = get_term_by('slug', $cat, 'categories');
 				$cat_label = (!empty(get_field('variant_2', $cat))) ? get_field('variant_2', $cat) : $cat->name;
 				$result_cat = ' по ремонту ' . $cat_label;
+				$result_cat = mb_strtolower($result_cat);
+			} else {
+				$result_cat = ' по ремонту техники ';
 			}
 
 			$result_firm = null;

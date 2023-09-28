@@ -80,7 +80,10 @@ usort($services_arr, function ($a, $b) {
 	return ($a->rate > $b->rate) ? -1 : 1;
 });
 
-$count_pages = intval($services->found_posts / $posts_per_page);
+$count_pages = $services->found_posts / $posts_per_page;
+if (gettype($count_pages) != 'integer') {
+	$count_pages = intval($count_pages) + 1;
+}
 ?>
 
 <section class="services">
@@ -149,26 +152,27 @@ $count_pages = intval($services->found_posts / $posts_per_page);
 						<?php } ?>
 					</ul>
 					<!-- /.services-box -->
-					<div class="services-helper">
-
-						<div class="paginationjs">
-							<div class="paginationjs-prev"></div>
-							<ul>
-								<?php for ($i = 1; $i <= $count_pages; $i++) { ?>
-									<li class="<?= ($i === 1) ? 'active' : '' ?>"><?= $i ?></li>
-									<?php if ($i >= 4) break; ?>
-								<?php } ?>
-
-								<?php if ($count_pages > 4) { ?>
-									<?php if ($count_pages > 5) { ?>
-										<span>...</span>
+					<?php if ($count_pages > 1) { ?>
+						<div class="services-helper">
+							<div class="paginationjs">
+								<div class="paginationjs-prev"></div>
+								<ul>
+									<?php for ($i = 1; $i <= $count_pages; $i++) { ?>
+										<li class="<?= ($i === 1) ? 'active' : '' ?>"><?= $i ?></li>
+										<?php if ($i >= 4) break; ?>
 									<?php } ?>
-									<li><?= $count_pages ?></li>
-								<?php } ?>
-							</ul>
-							<div class="paginationjs-next"></div>
+
+									<?php if ($count_pages > 4) { ?>
+										<?php if ($count_pages > 5) { ?>
+                                            <span>...</span>
+										<?php } ?>
+										<li><?= $count_pages ?></li>
+									<?php } ?>
+								</ul>
+								<div class="paginationjs-next"></div>
+							</div>
 						</div>
-					</div>
+					<?php } ?>
 					<!-- /.services-helper -->
 				</div>
 				<!-- /.services-inner -->

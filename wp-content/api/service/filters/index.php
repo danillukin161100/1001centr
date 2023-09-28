@@ -80,6 +80,10 @@ if ($services->have_posts()) {
 	$result['count'] = count($services->posts);
 	$result['link'] = get_home_url() . '/services/' . $firm_url . '/' . $city_url . '/' . $cat_url;
 	unset($result['message']);
+} else {
+	$result['count'] = 0;
+	$result['link'] = '#';
+	$result['message'] = 'Таких сервисов не найдено';
 }
 
 echo json_encode($result, 320);
