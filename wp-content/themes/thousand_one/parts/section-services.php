@@ -2,14 +2,12 @@
 $city = get_query_var('city', 'all_cities');
 $cat = get_query_var('categories', 'all_categories');
 $firm = get_query_var('firms', 'all_firms');
+$posts_per_page = 12;
 
 $args = [
 	'post_type' => 'service',
-	'posts_per_page' => 8,
-	// 'meta_key' => 'rate',
-	// 'orderby'  => [
-	// 	'meta_value_num' => 'DESC',
-	// ],
+	'posts_per_page' => $posts_per_page,
+	'paged' => (!empty($_GET['page'])) ? $_GET['page'] : 1,
 ];
 
 if (!empty($city) && $city != 'all_cities') {
@@ -66,6 +64,7 @@ if ($services->have_posts()) {
 		if ($rate = get_field('rate')) {
 			$service_data->rate = $rate;
 		}
+		if (empty($service_data->rate)) $service_data->rate = 0;
 
 		if (($phones = get_field('phones')) && !empty($phones[0]['number'])) {
 			$service_data->phone = phoneLink($phones[0]['number']);
@@ -76,16 +75,12 @@ if ($services->have_posts()) {
 }
 wp_reset_query();
 
-usort($services_arr, function($a, $b){
+usort($services_arr, function ($a, $b) {
 	if ($a->rate == $b->rate) return 0;
 	return ($a->rate > $b->rate) ? -1 : 1;
 });
 
-echo '<pre id="ahsvdjashd">';
-// var_dump($city, $cat, $firm);
-// print_r($services);
-echo '</pre>';
-
+$count_pages = intval($services->found_posts / $posts_per_page);
 ?>
 
 <section class="services">
@@ -108,57 +103,75 @@ echo '</pre>';
 			</div>
 			<!-- /.services-control -->
 			<div class="services-wrapper">
-                <div class="services-inner js-block-changer" id="demo">
-                    <ul class="services-box data-container" id="data-container">
-                        <li>
-                            <div class="services__item">
-                                <a href="${item.service_link}" class="services__item-titleBx">
-                                    <img src="<?= get_template_directory_uri() ?>/images/services/check.svg" alt="">
-                                    <p class="services__item-title">Барон</p>
-                                </a>
-                                <div class="services__item-info"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
-                                    <div class="services__item-info-main">
-                                        <p>Адрес</p>
-                                    </div>
-                                </div>
-                                <div class="services__item-info">
-                                    <img src="<?= get_template_directory_uri() ?>/images/services/clock.svg" alt="">
-                                    <div class="services__item-info-main">
-                                        <p>
-                                            Пн-Пт: 10:00 - 21:00 <br>
-                                            Сб-Вс: 10:00 - 21:00
-                                        </p>
-                                    </div>
-                                </div>
+				<div class="services-inner js-block-changer" id="demo">
+					<ul class="services-box data-container" id="data-container">
+						<?php foreach ($services_arr as $service) { ?>
+							<li>
+								<div class="services__item">
+									<div class="services__item-titleBx">
+										<?php if (!empty($service->moder)) { ?>
+											<img src="<?= get_template_directory_uri() ?>/images/services/check.svg" alt="">
+										<?php } ?>
+										<a href="<?= get_the_permalink() ?>" class="services__item-title"><?= get_the_title() ?></a>
+									</div>
+									<?php if (!empty($service->address)) { ?>
+										<div class="services__item-info address"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
+											<div class="services__item-info-main">
+												<p class="services__item-info-address" data-city="<?= (!empty($service->city)) ? $service->city->name : '' ?>"><?= $service->address ?></p>
+											</div>
+										</div>
+									<?php } ?>
+									<div class="services__item-info time"><img src="<?= get_template_directory_uri() ?>/images/services/clock.svg" alt="">
+										<div class="services__item-info-main">
+											<p>
+												Пн-Пт: <?= $service->weekdays ?> <br>
+												Сб-Вс: <?= $service->weekend ?>
+											</p>
+										</div>
+									</div>
+									<?php if (!empty($service->rate)) { ?>
+										<div class="services__item-info rate"><img src="<?= get_template_directory_uri() ?>/images/services/star.svg" alt="">
+											<div class="services__item-info-main">
+												<p><?= $service->rate ?></p>
+											</div>
+										</div>
+									<?php } ?>
+									<div class="services__item-buttonBx">
+										<button class="pb services__item-feedback" data-type="repair">Оставить заявку</button>
+										<?php if (!empty($service->phone)) { ?>
+											<a href="tel:<?= $service->phone ?>" class="services__item-phone">
+												<img src="<?= get_template_directory_uri() ?>/images/services/phone.svg" alt="">
+											</a>
+										<?php } ?>
+									</div>
+								</div>
+							</li>
+						<?php } ?>
+					</ul>
+					<!-- /.services-box -->
+					<div class="services-helper">
 
-                                <div class="services__item-info"><img src="<?= get_template_directory_uri() ?>/images/services/star.svg" alt="">
-                                    <div class="services__item-info-main">
-                                        <p>5.0 (15)</p>
-                                    </div>
-                                </div>
-                                <div class="services__item-buttonBx">
-                                    <button class="services__item-feedback pb" data-type="repair">Оставить заявку</button>
-                                    <a href="tel: +7 (969) 999-42-80" class="services__item-phone"><img src="<?= get_template_directory_uri() ?>/images/services/phone.svg" alt=""></a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- /.services-box -->
-                    <div class="services-helper">
+						<div class="paginationjs">
+							<div class="paginationjs-prev"></div>
+							<ul>
+								<?php for ($i = 1; $i <= $count_pages; $i++) { ?>
+									<li class="<?= ($i === 1) ? 'active' : '' ?>"><?= $i ?></li>
+									<?php if ($i >= 4) break; ?>
+								<?php } ?>
 
-                        <div class="paginationjs">
-                            <div class="paginationjs-prev"></div>
-                            <ul>
-                                <li>1</li>
-                                <li>...</li>
-                                <li>2</li>
-                            </ul>
-                            <div class="paginationjs-next"></div>
-                        </div>
-                    </div>
-                    <!-- /.services-helper -->
-                </div>
-                <!-- /.services-inner -->
+								<?php if ($count_pages > 4) { ?>
+									<?php if ($count_pages > 5) { ?>
+										<li>...</li>
+									<?php } ?>
+									<li><?= $count_pages ?></li>
+								<?php } ?>
+							</ul>
+							<div class="paginationjs-next"></div>
+						</div>
+					</div>
+					<!-- /.services-helper -->
+				</div>
+				<!-- /.services-inner -->
 
 				<div class="js-block-changer services-map">
 					<div class="_overlay-bg services-map-helper">
