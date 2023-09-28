@@ -6,13 +6,13 @@ $firm = get_query_var('firms', 'all_firms');
 $args = [
 	'post_type' => 'service',
 	'posts_per_page' => 8,
-	'meta_key' => 'rate',
-	'orderby'  => [
-		'meta_value_num' => 'DESC',
-	],
+	// 'meta_key' => 'rate',
+	// 'orderby'  => [
+	// 	'meta_value_num' => 'DESC',
+	// ],
 ];
 
-if ($city != 'all_cities') {
+if (!empty($city) && $city != 'all_cities') {
 	$args['tax_query'][] = [
 		'taxonomy' => 'city',
 		'field' => 'slug',
@@ -20,7 +20,7 @@ if ($city != 'all_cities') {
 	];
 }
 
-if ($cat != 'all_categories') {
+if (!empty($cat) && $cat != 'all_categories') {
 	$args['tax_query'][] = [
 		'taxonomy' => 'categories',
 		'field' => 'slug',
@@ -28,7 +28,7 @@ if ($cat != 'all_categories') {
 	];
 }
 
-if ($firm != 'all_firms') {
+if (!empty($firm) && $firm != 'all_firms') {
 	$args['tax_query'][] = [
 		'taxonomy' => 'firms',
 		'field' => 'slug',
@@ -38,16 +38,59 @@ if ($firm != 'all_firms') {
 
 $services = new WP_Query($args);
 
-// echo '<pre id="ahsvdjashd">';
+$services_arr = [];
+
+if ($services->have_posts()) {
+	while ($services->have_posts()) : $services->the_post();
+
+		$service_data = (object) [
+			'id' => get_the_ID(),
+			'weekdays' => (!empty(get_field('weekdays'))) ? get_field('weekdays') : ' - ',
+			'weekend' => (!empty(get_field('weekend'))) ? get_field('weekend') : ' - ',
+			'link' => get_permalink(),
+		];
+
+		if ($moder = get_field('moder')) {
+			$service_data->moder = $moder;
+		}
+
+		if ($address = get_field('address')) {
+			$service_data->address = $address;
+		}
+
+		$city = null;
+		if (($cities = get_the_terms(get_the_ID(), 'city')) && !empty($cities)) {
+			$service_data->city = array_shift($cities);
+		}
+
+		if ($rate = get_field('rate')) {
+			$service_data->rate = $rate;
+		}
+
+		if (($phones = get_field('phones')) && !empty($phones[0]['number'])) {
+			$service_data->phone = phoneLink($phones[0]['number']);
+		}
+
+		$services_arr[] = $service_data;
+	endwhile;
+}
+wp_reset_query();
+
+usort($services_arr, function($a, $b){
+	if ($a->rate == $b->rate) return 0;
+	return ($a->rate > $b->rate) ? -1 : 1;
+});
+
+echo '<pre id="ahsvdjashd">';
 // var_dump($city, $cat, $firm);
-// print_r($services->posts);
-// echo '</pre>';
+// print_r($services);
+echo '</pre>';
 
 ?>
 
 <section class="services">
 	<div class="services__container">
-		<?php if ($services->have_posts()) { ?>
+		<?php if (!empty($services_arr)) { ?>
 			<div class="services-control">
 				<div class="services-control-inputBx">
 					<input id="services-control-input" type="text" data-list=".services-box" placeholder="Введите адрес">
@@ -77,56 +120,47 @@ $services = new WP_Query($args);
 				<div class="js-block-changer services-map">
 					<div class="_overlay-bg services-map-helper">
 						<div class="services-map-box">
-							<?php while ($services->have_posts()) : $services->the_post(); ?>
-								<div class="services__item" data-service-id="<?= get_the_ID() ?>">
+							<?php foreach ($services_arr as $service) { ?>
+								<div class="services__item" data-service-id="<?= $service->id ?>">
 									<div class="services__item-titleBx">
-										<?php if (get_field('moder')) { ?>
+										<?php if (!empty($service->moder)) { ?>
 											<img src="<?= get_template_directory_uri() ?>/images/services/check.svg" alt="">
 										<?php } ?>
 										<a href="<?= get_the_permalink() ?>" class="services__item-title"><?= get_the_title() ?></a>
 									</div>
-									<?php if ($address = get_field('address')) { ?>
-										<?php
-										$city = null;
-										if (($cities = get_the_terms(get_the_ID(), 'city')) && !empty($cities)) {
-											$city = array_shift($cities);
-										}
-										?>
+									<?php if (!empty($service->address)) { ?>
 										<div class="services__item-info address"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
 											<div class="services__item-info-main">
-												<p class="services__item-info-address" data-city="<?= (!empty($city)) ? $city->name : '' ?>"><?= $address ?></p>
+												<p class="services__item-info-address" data-city="<?= (!empty($service->city)) ? $service->city->name : '' ?>"><?= $service->address ?></p>
 											</div>
 										</div>
 									<?php } ?>
 									<div class="services__item-info time"><img src="<?= get_template_directory_uri() ?>/images/services/clock.svg" alt="">
 										<div class="services__item-info-main">
 											<p>
-												<?php
-												$weekdays = (!empty(get_field('weekdays'))) ? get_field('weekdays') : ' - ';
-												$weekend = (!empty(get_field('weekend'))) ? get_field('weekend') : ' - ';
-												?>
-												Пн-Пт: <?= $weekdays ?> <br>
-												Сб-Вс: <?= $weekend ?>
+												Пн-Пт: <?= $service->weekdays ?> <br>
+												Сб-Вс: <?= $service->weekend ?>
 											</p>
 										</div>
 									</div>
-									<?php if ($rate = get_field('rate')) { ?>
+									<?php if (!empty($service->rate)) { ?>
 										<div class="services__item-info rate"><img src="<?= get_template_directory_uri() ?>/images/services/star.svg" alt="">
 											<div class="services__item-info-main">
-												<p><?= $rate ?></p>
+												<p><?= $service->rate ?></p>
 											</div>
 										</div>
 									<?php } ?>
 									<div class="services__item-buttonBx">
-										<button class="pb services__item-feedback" data-type="repair">Оставить заявку
-										</button>
-										<a href="<?= (($phones = get_field('phones')) && !empty($phones[0]['number'])) ? 'tel: ' . phoneLink($phones[0]['number']) : '#!' ?>" class="services__item-phone">
-											<img src="<?= get_template_directory_uri() ?>/images/services/phone.svg" alt="">
-										</a>
-										<a href="#" class="services__item-phone">Открыть</a>
+										<button class="pb services__item-feedback" data-type="repair">Оставить заявку</button>
+										<?php if (!empty($service->phone)) { ?>
+											<a href="tel:<?= $service->phone ?>" class="services__item-phone">
+												<img src="<?= get_template_directory_uri() ?>/images/services/phone.svg" alt="">
+											</a>
+										<?php } ?>
+										<a href="<?= $service->link ?>" class="services__item-phone">Открыть</a>
 									</div>
 								</div>
-							<?php endwhile; ?>
+							<?php } ?>
 							<div class="button-close services-map-box__cross"><i class="fa-solid fa-xmark"></i></div>
 						</div>
 					</div>
