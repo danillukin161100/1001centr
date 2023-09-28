@@ -271,70 +271,70 @@ document.addEventListener('DOMContentLoaded', function() {
         $('input[name="tel"]').mask('+7 (999) 999 99-99')
     }
 
-    if(document.querySelector('.services-box')) {
-        let pageSize = window.innerWidth > 768 ? 12
-            : 8
-        $('#demo').pagination({
-            // dataSource: function(done){
-            //     $.ajax({
-            //         type: 'GET',
-            //         url: '../static/data.json',
-            //         success: function(response){
-            //             done(response.items);
-            //         },
-            //         error: function (e) {
-            //             console.log(e)
-            //         }
-            //     })},
-            dataSource: function(done){
-                let result = [];
-                let items = document.querySelectorAll('.services__item')
-                for(let i = 0; i < items.length; i++){
-                    let address = items[i].querySelector('.services__item-info-address'),
-                        name = items[i].querySelector('.services__item-title'),
-                        check_link = items[i].querySelector('.services__item-titleBx img'),
-                        service_link = items[i].querySelector('.services__item-title'),
-                        phone_icon = items[i].querySelector('.services__item-phone img'),
-                        iconAddress = items[i].querySelector('.services__item-info.address img'),
-                        iconTime = items[i].querySelector('.services__item-info.time img'),
-                        iconRate = items[i].querySelector('.services__item-info.rate img')
-
-                    result.push({
-                        "name": name != null ? name.textContent : '',
-                        "address": address != null ? address.textContent : '',
-                        "check_link": check_link != null ? check_link.src : '',
-                        "service_link": service_link != null ? service_link.href : '',
-                        "phone_icon": phone_icon != null ? phone_icon.src : '',
-                        "svgsIcon": [iconAddress, iconTime, iconRate],
-                    });
-                }
-                done(result);
-            },
-            pageSize: pageSize,
-            callback: function(data, pagination) {
-                let html = simpleTemplating(data);
-                $('#data-container').html(html);
-            },
-            afterNextOnClick: function(){
-                // function body
-                $('html, body').stop().animate({
-                    scrollTop: $('.services-inner').offset().top - 100
-                }, 700);
-            },
-            afterPreviousOnClick : function(){
-                // function body
-                $('html, body').stop().animate({
-                    scrollTop: $('.services-inner').offset().top - 100
-                }, 700);
-            },
-            afterPageOnClick   : function(){
-                // function body
-                $('html, body').stop().animate({
-                    scrollTop: $('.services-inner').offset().top - 100
-                }, 700);
-            }
-        })
-    }
+    // if(document.querySelector('.services-box')) {
+    //     let pageSize = window.innerWidth > 768 ? 12
+    //         : 8
+    //     $('#demo').pagination({
+    //         // dataSource: function(done){
+    //         //     $.ajax({
+    //         //         type: 'GET',
+    //         //         url: '../static/data.json',
+    //         //         success: function(response){
+    //         //             done(response.items);
+    //         //         },
+    //         //         error: function (e) {
+    //         //             console.log(e)
+    //         //         }
+    //         //     })},
+    //         dataSource: function(done){
+    //             let result = [];
+    //             let items = document.querySelectorAll('.services__item')
+    //             for(let i = 0; i < items.length; i++){
+    //                 let address = items[i].querySelector('.services__item-info-address'),
+    //                     name = items[i].querySelector('.services__item-title'),
+    //                     check_link = items[i].querySelector('.services__item-titleBx img'),
+    //                     service_link = items[i].querySelector('.services__item-title'),
+    //                     phone_icon = items[i].querySelector('.services__item-phone img'),
+    //                     iconAddress = items[i].querySelector('.services__item-info.address img'),
+    //                     iconTime = items[i].querySelector('.services__item-info.time img'),
+    //                     iconRate = items[i].querySelector('.services__item-info.rate img')
+    //
+    //                 result.push({
+    //                     "name": name != null ? name.textContent : '',
+    //                     "address": address != null ? address.textContent : '',
+    //                     "check_link": check_link != null ? check_link.src : '',
+    //                     "service_link": service_link != null ? service_link.href : '',
+    //                     "phone_icon": phone_icon != null ? phone_icon.src : '',
+    //                     "svgsIcon": [iconAddress, iconTime, iconRate],
+    //                 });
+    //             }
+    //             done(result);
+    //         },
+    //         pageSize: pageSize,
+    //         callback: function(data, pagination) {
+    //             let html = simpleTemplating(data);
+    //             $('#data-container').html(html);
+    //         },
+    //         afterNextOnClick: function(){
+    //             // function body
+    //             $('html, body').stop().animate({
+    //                 scrollTop: $('.services-inner').offset().top - 100
+    //             }, 700);
+    //         },
+    //         afterPreviousOnClick : function(){
+    //             // function body
+    //             $('html, body').stop().animate({
+    //                 scrollTop: $('.services-inner').offset().top - 100
+    //             }, 700);
+    //         },
+    //         afterPageOnClick   : function(){
+    //             // function body
+    //             $('html, body').stop().animate({
+    //                 scrollTop: $('.services-inner').offset().top - 100
+    //             }, 700);
+    //         }
+    //     })
+    // }
 
     if(document.querySelector('.description')) {
         let descWrapper = document.querySelector('.description-wrapper'),
@@ -450,7 +450,6 @@ document.addEventListener('DOMContentLoaded', function() {
             let thatCoordinates;
             //обработка нажатия
             myCollection.events.add('click', function (e) {
-                //myCollection.get('target').properties.set('active', false);
                 let that = e.get('target').properties.get('active');
                 myCollection.each(function(item, index){
                     item.properties.set('active', false);
@@ -463,10 +462,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         addresses.forEach(el => {
                             if(currentClickAddress === el.textContent) {
-                                // $('.services-map-box').stop().animate({
-                                //     scrollTop: $(el).offset().top
-                                // }, 700);
-                                // el.closest('.services__item').scrollIntoView({ behavior: 'smooth' });
                                 if(window.innerWidth > 768) {
                                     document.querySelector('.services-map-box').scrollTo({
                                         top: el.closest('.services__item').offsetTop,
@@ -486,14 +481,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                             }
                         })
-                        // let $address = document.querySelector('.map__address')
-                        // $address.textContent = currentClickAddress
-
-                        // if(window.innerWidth <= 600) {
-                        //     $('html, body').stop().animate({
-                        //         scrollTop: $('.map-inner').offset().top - 100
-                        //     }, 700);
-                        // }
                     }
                 });
             });
@@ -505,10 +492,6 @@ document.addEventListener('DOMContentLoaded', function() {
             myMap.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
             myMap.controls.remove('zoomControl'); // удаляем контрол зуммирования
             myMap.controls.remove('rulerControl'); // удаляем контрол правил
-            // myMap.behaviors.disable(['scrollZoom']); // отключаем скролл карты (опционально)
-
-            // myMap.geoObjects
-            //     .add(myPlacemark)
         }
 
 
@@ -554,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let squareLayout = ymaps.templateLayoutFactory.createClass("<svg class='services__icon {% if properties.active %} active{% endif %}' width='44' height='53' viewBox='0 0 44 53' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(#filter0_d_246_59)'><circle cx='22.4547' cy='22.455' r='7.72745' fill='white'/><path d='M38.3127 29.5423L38.3127 29.5424L38.3172 29.5335C39.1242 27.9544 39.0612 25.915 37.7376 24.3296C36.8789 23.3011 36.889 21.8027 37.7614 20.7859C40.272 17.8596 38.4271 13.3196 34.587 12.974C33.2526 12.8539 32.2002 11.7873 32.0981 10.4514C31.8041 6.60696 27.2893 4.70121 24.3296 7.1722C23.3011 8.03086 21.8027 8.02078 20.7859 7.14837C17.8596 4.63781 13.3196 6.48268 12.974 10.3228C12.8539 11.6572 11.7873 12.7096 10.4514 12.8117C6.60696 13.1057 4.70121 17.6205 7.1722 20.5802C8.03086 21.6087 8.02078 23.107 7.14837 24.1239C5.4001 26.1617 5.77148 28.9705 7.42392 30.6029L19.9202 46.7551C21.2033 48.4135 23.7065 48.4153 24.9918 46.7586L37.3829 30.7883L37.3841 30.787C37.4023 30.7668 37.4279 30.7382 37.459 30.703C37.5209 30.633 37.606 30.535 37.6985 30.4236C37.8651 30.223 38.1198 29.9036 38.2726 29.6188L38.2726 29.6188L38.2772 29.61L38.3127 29.5423ZM29.1823 22.4549C29.1823 26.1704 26.1704 29.1823 22.4549 29.1823C18.7394 29.1823 15.7274 26.1704 15.7274 22.4549C15.7274 18.7394 18.7394 15.7274 22.4549 15.7274C26.1704 15.7274 29.1823 18.7394 29.1823 22.4549Z' fill='#0D2938' stroke='white' stroke-width='2'/></g><defs><filter id='filter0_d_246_59' x='0.998779' y='0.99707' width='42.9138' height='52.0029' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/><feOffset/><feGaussianBlur stdDeviation='2'/><feComposite in2='hardAlpha' operator='out'/><feColorMatrix type='matrix' values='0 0 0 0 0.0197222 0 0 0 0 0.0666667 0 0 0 0 0.0407323 0 0 0 0.12 0'/><feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow_246_59'/><feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow_246_59' result='shape'/></filter></defs></svg>");
             let Map = new ymaps.Map("service-map", {
                 center: [x, y],
-                zoom: 10,
+                zoom: 15,
                 controls: [
                     'zoomControl',
                     'rulerControl',
@@ -781,6 +764,7 @@ document.addEventListener('DOMContentLoaded', function() {
             input.addEventListener('change', (e) => {
                 if(!e.target.value) {
                     e.target.parentNode.querySelector('input[type="hidden"]').value = ''
+                    sendFilters(generateFilterData())
                     return false;
                 }
                 let list = e.target.parentNode.querySelector('.control-list'),
@@ -833,47 +817,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function simpleTemplating(data) {
-    let html = '';
-    $.each(data, function(index, item){
-        html += `
-            <li>
-                <div class="services__item">
-                    <a href="${item.service_link}" class="services__item-titleBx"><img src="${item.check_link}" alt="">
-                        <p class="services__item-title">${item.name}</p>
-                    </a>
-                    ${item.svgsIcon[0] === null ? ''
-            : `<div class="services__item-info"><img src="${item.svgsIcon[0].currentSrc}" alt="">
-                                                        <div class="services__item-info-main">
-                                                            <p>${item.address}</p>
-                                                        </div>
-                                                    </div>`}
-                    
-                    ${item.svgsIcon[1] === null ? ''
-            : `<div class="services__item-info"><img src="${item.svgsIcon[1].currentSrc}" alt="">
-                                                    <div class="services__item-info-main">
-                                                        <p>
-                                                            Пн-Пт: 10:00 - 21:00 <br>
-                                                            Сб-Вс: 10:00 - 21:00
-                                                        </p>
-                                                    </div>
-                                                </div>`}
-                    
-                    <div class="services__item-info"><img src="${item.svgsIcon[2] === null ? '' : item.svgsIcon[2].currentSrc}" alt="">
-                        <div class="services__item-info-main">
-                            <p>5.0 (15)</p>
-                        </div>
-                    </div>
-                    <div class="services__item-buttonBx">
-                        <button class="services__item-feedback pb" data-type="repair">Оставить заявку</button>
-                        <a href="tel: +7 (969) 999-42-80" class="services__item-phone"><img src="${item.phone_icon}" alt=""></a>
-                    </div>
-                </div>
-            </li>
-        `;
-    });
-    return html;
-}
+// function simpleTemplating(data) {
+//     let html = '';
+//     $.each(data, function(index, item){
+//         html += `
+//             <li>
+//                 <div class="services__item">
+//                     <a href="${item.service_link}" class="services__item-titleBx"><img src="${item.check_link}" alt="">
+//                         <p class="services__item-title">${item.name}</p>
+//                     </a>
+//                     ${item.svgsIcon[0] === null ? ''
+//             : `<div class="services__item-info"><img src="${item.svgsIcon[0].currentSrc}" alt="">
+//                                                         <div class="services__item-info-main">
+//                                                             <p>${item.address}</p>
+//                                                         </div>
+//                                                     </div>`}
+//
+//                     ${item.svgsIcon[1] === null ? ''
+//             : `<div class="services__item-info"><img src="${item.svgsIcon[1].currentSrc}" alt="">
+//                                                     <div class="services__item-info-main">
+//                                                         <p>
+//                                                             Пн-Пт: 10:00 - 21:00 <br>
+//                                                             Сб-Вс: 10:00 - 21:00
+//                                                         </p>
+//                                                     </div>
+//                                                 </div>`}
+//
+//                     <div class="services__item-info"><img src="${item.svgsIcon[2] === null ? '' : item.svgsIcon[2].currentSrc}" alt="">
+//                         <div class="services__item-info-main">
+//                             <p>5.0 (15)</p>
+//                         </div>
+//                     </div>
+//                     <div class="services__item-buttonBx">
+//                         <button class="services__item-feedback pb" data-type="repair">Оставить заявку</button>
+//                         <a href="tel: +7 (969) 999-42-80" class="services__item-phone"><img src="${item.phone_icon}" alt=""></a>
+//                     </div>
+//                 </div>
+//             </li>
+//         `;
+//     });
+//     return html;
+// }
 
 $('.svg img').each(function () {
     let $img = $(this);

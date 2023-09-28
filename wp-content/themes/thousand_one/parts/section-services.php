@@ -108,14 +108,57 @@ echo '</pre>';
 			</div>
 			<!-- /.services-control -->
 			<div class="services-wrapper">
-				<div class="js-block-changer services-inner" id="demo">
-					<div class="data-container services-box" id="data-container">
+                <div class="services-inner js-block-changer" id="demo">
+                    <ul class="services-box data-container" id="data-container">
+                        <li>
+                            <div class="services__item">
+                                <a href="${item.service_link}" class="services__item-titleBx">
+                                    <img src="<?= get_template_directory_uri() ?>/images/services/check.svg" alt="">
+                                    <p class="services__item-title">Барон</p>
+                                </a>
+                                <div class="services__item-info"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
+                                    <div class="services__item-info-main">
+                                        <p>Адрес</p>
+                                    </div>
+                                </div>
+                                <div class="services__item-info">
+                                    <img src="<?= get_template_directory_uri() ?>/images/services/clock.svg" alt="">
+                                    <div class="services__item-info-main">
+                                        <p>
+                                            Пн-Пт: 10:00 - 21:00 <br>
+                                            Сб-Вс: 10:00 - 21:00
+                                        </p>
+                                    </div>
+                                </div>
 
-					</div>
-					<!-- /.services-box -->
-					<div id="pagination-container"></div>
-				</div>
-				<!-- /.services-inner -->
+                                <div class="services__item-info"><img src="<?= get_template_directory_uri() ?>/images/services/star.svg" alt="">
+                                    <div class="services__item-info-main">
+                                        <p>5.0 (15)</p>
+                                    </div>
+                                </div>
+                                <div class="services__item-buttonBx">
+                                    <button class="services__item-feedback pb" data-type="repair">Оставить заявку</button>
+                                    <a href="tel: +7 (969) 999-42-80" class="services__item-phone"><img src="<?= get_template_directory_uri() ?>/images/services/phone.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- /.services-box -->
+                    <div class="services-helper">
+
+                        <div class="paginationjs">
+                            <div class="paginationjs-prev"></div>
+                            <ul>
+                                <li>1</li>
+                                <li>...</li>
+                                <li>2</li>
+                            </ul>
+                            <div class="paginationjs-next"></div>
+                        </div>
+                    </div>
+                    <!-- /.services-helper -->
+                </div>
+                <!-- /.services-inner -->
 
 				<div class="js-block-changer services-map">
 					<div class="_overlay-bg services-map-helper">
