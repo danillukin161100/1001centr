@@ -503,14 +503,12 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding-right: 100px;
 }
 .content-main {
   padding-top: 70px;
 }
 .content__title {
   font-size: 3.125rem;
-  max-width: 780px;
   line-height: 3.4375rem;
   font-family: "OnestBold", sans-serif;
 }
@@ -1336,6 +1334,7 @@ body {
   flex-grow: 1;
   font-family: "OnestMedium", sans-serif;
   font-size: 0.875rem;
+  height: 50px;
 }
 .services__item-phone {
   width: 100%;
@@ -1512,6 +1511,30 @@ body {
   .services-mapBx {
     height: 380px;
   }
+  .services .paginationjs {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .services .paginationjs .paginationjs-prev {
+    margin-right: 10px;
+  }
+  .services .paginationjs .paginationjs-next {
+    margin-left: 10px;
+  }
+  .services .paginationjs .paginationjs-prev, .services .paginationjs .paginationjs-next {
+    width: 47px;
+    height: 47px;
+    display: none;
+  }
+  .services .paginationjs ul li, .services .paginationjs ul span {
+    width: 40px;
+    height: 40px;
+  }
+  .services .paginationjs ul li:not(:last-child), .services .paginationjs ul span:not(:last-child) {
+    margin-right: 10px;
+  }
 }
 
 .paginationjs {
@@ -1519,6 +1542,7 @@ body {
   align-items: center;
   justify-content: flex-end;
   align-items: center;
+  padding-top: 50px;
 }
 @media (max-width: 600px) {
   .paginationjs {
@@ -1530,7 +1554,10 @@ body {
   align-items: center;
   justify-content: flex-end;
 }
-.paginationjs ul li {
+.paginationjs ul span {
+  pointer-events: none;
+}
+.paginationjs ul li, .paginationjs ul span {
   width: 50px;
   height: 50px;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -1542,14 +1569,14 @@ body {
   cursor: pointer;
   transition: 0.5s cubic-bezier(0.21, 0.44, 0.37, 0.99);
 }
-.paginationjs ul li:not(:last-child) {
+.paginationjs ul li:not(:last-child), .paginationjs ul span:not(:last-child) {
   margin-right: 18px;
 }
-.paginationjs ul li.active {
+.paginationjs ul li.active, .paginationjs ul span.active {
   border: 2px solid #57E697;
   background-color: #fff;
 }
-.paginationjs ul li:hover {
+.paginationjs ul li:hover, .paginationjs ul span:hover {
   border: 1px solid #B4BAC2;
   background: #F6F5F4;
 }
@@ -2270,6 +2297,7 @@ body {
     max-width: none;
     margin: 0;
     padding: 0;
+    grid-template-columns: repeat(1, 1fr);
   }
   .catalog-type__item {
     padding: 16px;

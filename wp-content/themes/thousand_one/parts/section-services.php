@@ -161,7 +161,7 @@ $count_pages = intval($services->found_posts / $posts_per_page);
 
 								<?php if ($count_pages > 4) { ?>
 									<?php if ($count_pages > 5) { ?>
-										<li>...</li>
+										<span>...</span>
 									<?php } ?>
 									<li><?= $count_pages ?></li>
 								<?php } ?>

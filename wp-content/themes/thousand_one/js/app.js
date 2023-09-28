@@ -239,6 +239,16 @@ class SwipeablePopup {
 
 let geocodeApi = '06f41e63-609d-4d88-9c55-cf2900572996'
 document.addEventListener('DOMContentLoaded', function() {
+    //проверка на куки и вставка в hidden
+    // if(getCookie('city')) {
+    //     let cities = document.querySelectorAll('.control-list-city .control-list__link')
+    //     cities.forEach(el => {
+    //         let code = el.dataset.code
+    //         if(code === getCookie('city')) {
+    //             document.querySelector('.search-input-city').value = el.textContent
+    //         }
+    //     })
+    // }
     // установка куки текущего города
     if(document.querySelector('.region-cities')) {
         let cities = document.querySelector('.region-cities'),
@@ -471,8 +481,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                     let items = document.querySelectorAll('.services-map-box .services__item')
                                     items.forEach(service_item => service_item.style.display = 'flex')
                                     items.forEach(service_item => {
-                                        if(service_item.querySelector('.services__item-info-address').textContent !== currentClickAddress) {
-                                            service_item.style.display = 'none'
+                                        service_item.style.display = 'none'
+                                        if(!service_item.querySelector('.services__item-info-address')) return false
+                                        if(service_item.querySelector('.services__item-info-address').textContent === currentClickAddress) {
+                                            service_item.style.display = 'flex'
                                         }else{
                                             toggleBodyLock(true)
                                         }
@@ -748,16 +760,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
 
-        //проверка на куки и вставка в hidden
-        if(getCookie('city')) {
-            let cities = document.querySelectorAll('.control-list-city .control-list__link')
-            cities.forEach(el => {
-                let code = el.dataset.code
-                if(code === getCookie('city')) {
-                    document.querySelector('.search-input-city').value = el.textContent
-                }
-            })
-        }
 
         //обработка инпутов фильров
         document.querySelectorAll('.search-input').forEach(input => {
@@ -814,6 +816,99 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if(document.querySelector('.brands-served')) {
         hideElements()
+    }
+
+    if(document.querySelector('.paginationjs')) {
+        let pagination = document.querySelector('.paginationjs')
+
+        let totalPages = document.querySelector('.paginationjs ul li:last-child').textContent; // Замените на актуальное количество страниц
+        let currentPage = 5; // Замените на активную страницу
+
+        let  updatePagination = () => {
+            let paginationHtml = '';
+
+            if (window.innerWidth < 768) { // Адаптация для мобильных устройств (примерная ширина)
+                if (totalPages <= 3) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                    }
+                } else {
+                    if (currentPage <= 2) {
+                        for (let i = 1; i <= 3; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    } else if (currentPage >= totalPages - 1) {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = totalPages - 2; i <= totalPages; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                    } else {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        // paginationHtml += '<span class="ellipsis">...</li>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    }
+                }
+            } else { // Адаптация для десктопов и планшетов
+                if (totalPages <= 7) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                    }
+                } else {
+                    if (currentPage <= 3) {
+                        for (let i = 1; i <= 4; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    } else if (currentPage >= totalPages - 2) {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = totalPages - 3; i <= totalPages; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                    } else {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    }
+                }
+            }
+
+            $(".paginationjs ul").html(paginationHtml);
+        }
+
+        pagination.addEventListener('click', (e) => {
+            console.log(e.target.tagName)
+            if(e.target.tagName == 'LI') {
+                let clickedPage = currentPage = parseInt(e.target.textContent)
+                document.querySelectorAll('.paginationjs ul li').forEach(el => el.classList.remove('active'))
+                e.target.classList.add('active')
+                animateToBlock('.services-box')
+
+                updatePagination()
+                sendRequest('GET', `${location.href}?page=${clickedPage}`, '', 'html', data => {
+                    // Парсим полученный HTML-код в jQuery объект
+                    const $loadedContent = $('<div>').html(data);
+
+                    // Найдем элемент #content-to-append в загруженном содержимом
+                    const $contentToAppend = $loadedContent.find(`.services-box li`);
+
+
+                    $(`.services-box `).html($contentToAppend);
+                })
+            }
+        })
     }
 });
 
@@ -953,6 +1048,7 @@ let getCookie = (name) => {
 }
 
 function sendRequest(type = 'POST', link, data, dataType = 'json',  callback = json => {}) {
+    console.log(data)
     $.ajax({
         type: type,
         url: `${link}`,
