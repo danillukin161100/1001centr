@@ -15,7 +15,6 @@ $result = [
 	'success' => false,
 	'message' => 'Что-то пошло не так',
 ];
-
 if (empty($data)) {
 	$result['message'] = 'Данные не заполнены';
 	echo json_encode($result, 320);

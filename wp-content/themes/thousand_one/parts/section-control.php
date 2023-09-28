@@ -1,7 +1,7 @@
 <section class="control">
 	<div class="control__container">
 		<div class="control-inner">
-			<form action="#" class="control-box">
+			<div class="control-box">
 
 				<?php
 				$cities = get_terms([
@@ -68,9 +68,9 @@
 					</div>
 				<?php } ?>
 				<div class="control-selectBx">
-					<a href="#" class="pb control__button">Показать <span></span></a>
+					<button data-link="" class="pb control__button">Показать <span></span></button>
 				</div>
-			</form>
+			</div>
 			<!-- /.control-box -->
 		</div>
 		<!-- /.control-inner -->

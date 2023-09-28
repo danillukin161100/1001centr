@@ -27,7 +27,7 @@ if (empty($firms)) return false;
 			<?php } ?>
 		</div>
 		<!-- /.brands-box -->
-		<button class="brands__button" data-page="1">Показать ещё</button>
+		<button class="brands__button" data-page="1"><span>Показать еще</span><span><img src="<?= get_template_directory_uri() ?>/images/elements/loader.svg" alt=""></span></button>
 		<!-- /.brands__button -->
 	</div>
 	<!-- /.brands__container -->

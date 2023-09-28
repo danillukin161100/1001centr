@@ -236,6 +236,8 @@ class SwipeablePopup {
 
     }
 }
+
+let geocodeApi = '06f41e63-609d-4d88-9c55-cf2900572996'
 document.addEventListener('DOMContentLoaded', function() {
     // установка куки текущего города
     if(document.querySelector('.region-cities')) {
@@ -356,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     center: [59.91174358283167,30.349143781250017],
                     // Уровень масштабирования. Допустимые значения:
                     // от 0 (весь мир) до 19.
-                    zoom: 11,
+                    zoom: 8,
                 }),
                 objectManager = new ymaps.ObjectManager({
                     // Чтобы метки начали кластеризоваться, выставляем опцию.
@@ -369,7 +371,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             //функция установки центра относительно всех точек на карте
             // Функция для установки центра карты по средним координатам
-            let setMapCenter = (map, coordinatesArray) => {
+            // Функция для установки центра и масштаба карты для охвата всех точек
+            function setMapCenterAndZoom(map, coordinatesArray) {
+                // Находим минимальные и максимальные значения широты и долготы
                 let sumLat = 0;
                 let sumLon = 0;
 
@@ -384,8 +388,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 let avgLat = sumLat / coordinatesArray.length;
                 let avgLon = sumLon / coordinatesArray.length;
 
+                // Устанавливаем центр карты
                 map.setCenter([avgLon, avgLat]);
             }
+
 
 
             let myCollection = new ymaps.GeoObjectCollection();
@@ -397,7 +403,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let results = [];
                 let obj = {}
 
-                sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=06f41e63-609d-4d88-9c55-cf2900572996&geocode=${item.dataset.city}${item.textContent.trim()}&format=json`,false, 'json', json => {
+                sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=${geocodeApi}&geocode=${item.dataset.city}${item.textContent.trim()}&format=json`,false, 'json', json => {
                     let [y, x] = json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ')
                     addressArr.push(json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' '))
                     obj = {
@@ -409,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     results.push(createPlacemark(obj));
 
                     if (addressArr.length === address.length) {
-                        setMapCenter(myMap, addressArr);
+                        setMapCenterAndZoom(myMap, addressArr);
                     }
                 })
                 // data.points.forEach(function(item, index) {
@@ -542,16 +548,10 @@ document.addEventListener('DOMContentLoaded', function() {
             x = $(".js-map").data('x') === undefined ? 0 : $(".js-map").data('x'),
             y =$(".js-map").data('y') === undefined ? 0 : $(".js-map").data('y')
 
-        if(!x || !y) {
-            let address = document.querySelector('.service-info__item-address').textContent.trim()
-            sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=06f41e63-609d-4d88-9c55-cf2900572996&geocode=${address}&format=json`,false, 'json', json => {
-                [y, x] = json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ')
-            })
-        }
-
         ymaps.ready(init);
 
         function init() {
+            let squareLayout = ymaps.templateLayoutFactory.createClass("<svg class='services__icon {% if properties.active %} active{% endif %}' width='44' height='53' viewBox='0 0 44 53' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(#filter0_d_246_59)'><circle cx='22.4547' cy='22.455' r='7.72745' fill='white'/><path d='M38.3127 29.5423L38.3127 29.5424L38.3172 29.5335C39.1242 27.9544 39.0612 25.915 37.7376 24.3296C36.8789 23.3011 36.889 21.8027 37.7614 20.7859C40.272 17.8596 38.4271 13.3196 34.587 12.974C33.2526 12.8539 32.2002 11.7873 32.0981 10.4514C31.8041 6.60696 27.2893 4.70121 24.3296 7.1722C23.3011 8.03086 21.8027 8.02078 20.7859 7.14837C17.8596 4.63781 13.3196 6.48268 12.974 10.3228C12.8539 11.6572 11.7873 12.7096 10.4514 12.8117C6.60696 13.1057 4.70121 17.6205 7.1722 20.5802C8.03086 21.6087 8.02078 23.107 7.14837 24.1239C5.4001 26.1617 5.77148 28.9705 7.42392 30.6029L19.9202 46.7551C21.2033 48.4135 23.7065 48.4153 24.9918 46.7586L37.3829 30.7883L37.3841 30.787C37.4023 30.7668 37.4279 30.7382 37.459 30.703C37.5209 30.633 37.606 30.535 37.6985 30.4236C37.8651 30.223 38.1198 29.9036 38.2726 29.6188L38.2726 29.6188L38.2772 29.61L38.3127 29.5423ZM29.1823 22.4549C29.1823 26.1704 26.1704 29.1823 22.4549 29.1823C18.7394 29.1823 15.7274 26.1704 15.7274 22.4549C15.7274 18.7394 18.7394 15.7274 22.4549 15.7274C26.1704 15.7274 29.1823 18.7394 29.1823 22.4549Z' fill='#0D2938' stroke='white' stroke-width='2'/></g><defs><filter id='filter0_d_246_59' x='0.998779' y='0.99707' width='42.9138' height='52.0029' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/><feOffset/><feGaussianBlur stdDeviation='2'/><feComposite in2='hardAlpha' operator='out'/><feColorMatrix type='matrix' values='0 0 0 0 0.0197222 0 0 0 0 0.0666667 0 0 0 0 0.0407323 0 0 0 0.12 0'/><feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow_246_59'/><feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow_246_59' result='shape'/></filter></defs></svg>");
             let Map = new ymaps.Map("service-map", {
                 center: [x, y],
                 zoom: 10,
@@ -561,26 +561,60 @@ document.addEventListener('DOMContentLoaded', function() {
                     'routeButtonControl',
                 ]
             });
+            //если не заданы x и y то запрос геокодеру по адресу
+            if(!x || !y) {
+                let address = document.querySelector('.service-info__item-address'),
+                    city = document.querySelector('.service-info__item-address').dataset.city !== undefined ? document.querySelector('.service-info__item-address').dataset.city : ''
+                sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=${geocodeApi}&geocode=${city}${address.textContent.trim()}&format=json`,false, 'json', json => {
+                    [y, x] = json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ')
+                    let mark = new ymaps.Placemark([x, y],
+                        {
+                            hint: 'Сервисный центр ',
+                            balloonContent: addr,
+                        },
+                        {
+                            iconLayout: squareLayout,
+                            iconShape: {
+                                type: 'Rectangle',
+                                coordinates: [
+                                    [15, 20], [30, 40]
+                                ]
+                            }
+                        }
+                    );
 
-            let squareLayout = ymaps.templateLayoutFactory.createClass("<svg class='services__icon {% if properties.active %} active{% endif %}' width='44' height='53' viewBox='0 0 44 53' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(#filter0_d_246_59)'><circle cx='22.4547' cy='22.455' r='7.72745' fill='white'/><path d='M38.3127 29.5423L38.3127 29.5424L38.3172 29.5335C39.1242 27.9544 39.0612 25.915 37.7376 24.3296C36.8789 23.3011 36.889 21.8027 37.7614 20.7859C40.272 17.8596 38.4271 13.3196 34.587 12.974C33.2526 12.8539 32.2002 11.7873 32.0981 10.4514C31.8041 6.60696 27.2893 4.70121 24.3296 7.1722C23.3011 8.03086 21.8027 8.02078 20.7859 7.14837C17.8596 4.63781 13.3196 6.48268 12.974 10.3228C12.8539 11.6572 11.7873 12.7096 10.4514 12.8117C6.60696 13.1057 4.70121 17.6205 7.1722 20.5802C8.03086 21.6087 8.02078 23.107 7.14837 24.1239C5.4001 26.1617 5.77148 28.9705 7.42392 30.6029L19.9202 46.7551C21.2033 48.4135 23.7065 48.4153 24.9918 46.7586L37.3829 30.7883L37.3841 30.787C37.4023 30.7668 37.4279 30.7382 37.459 30.703C37.5209 30.633 37.606 30.535 37.6985 30.4236C37.8651 30.223 38.1198 29.9036 38.2726 29.6188L38.2726 29.6188L38.2772 29.61L38.3127 29.5423ZM29.1823 22.4549C29.1823 26.1704 26.1704 29.1823 22.4549 29.1823C18.7394 29.1823 15.7274 26.1704 15.7274 22.4549C15.7274 18.7394 18.7394 15.7274 22.4549 15.7274C26.1704 15.7274 29.1823 18.7394 29.1823 22.4549Z' fill='#0D2938' stroke='white' stroke-width='2'/></g><defs><filter id='filter0_d_246_59' x='0.998779' y='0.99707' width='42.9138' height='52.0029' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/><feOffset/><feGaussianBlur stdDeviation='2'/><feComposite in2='hardAlpha' operator='out'/><feColorMatrix type='matrix' values='0 0 0 0 0.0197222 0 0 0 0 0.0666667 0 0 0 0 0.0407323 0 0 0 0.12 0'/><feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow_246_59'/><feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow_246_59' result='shape'/></filter></defs></svg>");
-            let mark = new ymaps.Placemark([x, y],
-                {
-                    hint: 'Сервисный центр ',
-                    balloonContent: addr,
-                },
-                {
-                    iconLayout: squareLayout,
-                    iconShape: {
-                        type: 'Rectangle',
-                        coordinates: [
-                            [15, 20], [30, 40]
-                        ]
+                    Map.geoObjects.add(mark);
+                    Map.setCenter([x, y])
+
+                    let dataToSendCoords = {
+                        service_id: parseInt(document.querySelector('.service').dataset.serviceId),
+                        x: x,
+                        y: y,
+                    };
+                    sendRequest('POST', `${location.protocol}//${location.hostname}/wp-content/api/service/coords/`, JSON.stringify(dataToSendCoords), 'json', (json) => {})
+                })
+            }else{
+                let mark = new ymaps.Placemark([x, y],
+                    {
+                        hint: 'Сервисный центр ',
+                        balloonContent: addr,
+                    },
+                    {
+                        iconLayout: squareLayout,
+                        iconShape: {
+                            type: 'Rectangle',
+                            coordinates: [
+                                [15, 20], [30, 40]
+                            ]
+                        }
                     }
-                }
-            );
+                );
 
-            Map.geoObjects.add(mark);
+                Map.geoObjects.add(mark);
+                Map.setCenter([x, y])
+            }
         }
+
     }
 
     if(document.querySelector('.header')) {
@@ -644,31 +678,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    if(document.querySelector('.search-input')) {
-        let inputs = document.querySelectorAll('.search-input')
-        inputs.forEach(input => {
-            input.addEventListener('focus', (e) => {
-                e.target.parentNode.classList.add('active')
-            })
-            $(input).hideseek({ });
-        })
-
-        let searchBxs = document.querySelectorAll('.control-list')
-        searchBxs.forEach(searchBx => {
-            searchBx.addEventListener('click', e => {
-                if(e.target.closest('.control-list__link')) {
-                    e.target.closest('.control-selectBx').querySelector('input').value = e.target.closest('.control-list__link').textContent
-                }
-            })
-        })
-    }
-
     if(document.querySelector('[data-more]')){
         let sectionsButton = document.querySelectorAll('[data-more] button')
         sectionsButton.forEach(button => {
             button.addEventListener('click', () => {
                 let iterationNmae = button.closest('[data-more]').dataset.more,
                     page = parseInt(button.dataset.page)
+                button.classList.add('isLoading')
                 sendRequest('GET', `${location.href}?${iterationNmae}_iteration=${++page}`, '', 'html', data => {
                     // Парсим полученный HTML-код в jQuery объект
                     const $loadedContent = $('<div>').html(data);
@@ -683,6 +699,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.dataset.page = button.dataset.page + 1
                     // Добавим $contentToAppend к #technics-box
                     $(`.${button.previousElementSibling.classList[0]}`).append($contentToAppend);
+                    button.classList.remove('isLoading')
                 })
             })
         })
@@ -704,6 +721,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if(document.querySelector('.search-input')) {
+        let setStatusRequest = (isRequest) => {
+            if(isRequest) {
+                //заблокировать input
+                document.querySelector('.control-box').classList.add('disable')
+            }else{
+                //разблокировать input
+                document.querySelector('.control-box').classList.remove('disable')
+            }
+        }
+
+        let sendFilters = (data) => {
+            setStatusRequest(true)
+            sendRequest('POST', `${location.protocol}//${location.hostname}/wp-content/api/service/filters/`, data, 'json', json => {
+                if(json.link) {
+                    let countFilter = document.querySelector('.control__button')
+                    countFilter.querySelector('span').textContent = json.count
+                    countFilter.dataset.link = json.link
+                }else{
+
+                }
+                setStatusRequest(false)
+            })
+        }
+        //первый запрос при заходе на страницу
+        sendFilters(generateFilterData())
+
+        //выпадающий список
+        let inputs = document.querySelectorAll('.search-input')
+        inputs.forEach(input => {
+            input.addEventListener('focus', (e) => {
+                e.target.parentNode.classList.add('active')
+            })
+            $(input).hideseek({ });
+        })
+
+        let searchBxs = document.querySelectorAll('.control-list')
+        searchBxs.forEach(searchBx => {
+            searchBx.addEventListener('click', e => {
+                if(e.target.closest('.control-list__link')) {
+                    e.target.closest('.control-selectBx').querySelector('input').value = e.target.closest('.control-list__link').textContent
+                }
+            })
+        })
+
+        //проверка на куки и вставка в hidden
         if(getCookie('city')) {
             let cities = document.querySelectorAll('.control-list-city .control-list__link')
             cities.forEach(el => {
@@ -714,17 +776,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         }
 
-        let sendFilters = (data) => {
-            sendRequest('POST', `${location.protocol}//${location.hostname}/wp-content/api/service/filters/`, data, 'json', json => {
-                if(json.link) {
-                    let countFilter = document.querySelector('.control__button')
-                    countFilter.querySelector('span').textContent = json.count
-                    countFilter.href = json.link
-                }
-            })
-        }
-
-
+        //обработка инпутов фильров
         document.querySelectorAll('.search-input').forEach(input => {
             input.addEventListener('change', (e) => {
                 if(!e.target.value) {
@@ -754,6 +806,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
         })
+
+        //при нажатии на кнопку откроется ссылка из data-link
+        document.querySelector('.control__button').addEventListener('click', () => {
+            window.location.href = document.querySelector('.control__button').dataset.link
+        })
     }
 
     if(document.querySelector('.guide')) {
@@ -769,6 +826,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 cityButtonMore.textContent = 'Скрыть список городов'
             }
         })
+    }
+
+    if(document.querySelector('.brands-served')) {
+        hideElements()
     }
 });
 
@@ -847,6 +908,29 @@ $('.svg img').each(function () {
     }, 'xml');
 
 });
+
+let hideElements = () => {
+    let allServicesItem = document.querySelectorAll('.brands-served__item')
+
+    for (let i = 12; i < allServicesItem.length; i++) {
+        allServicesItem[i].classList.add('hidden')
+    }
+
+    let more = document.querySelectorAll('.brands-served__button');
+
+    for (let i = 0; i < more.length; i++) {
+        more[i].addEventListener('click', function () {
+            let showPerClick = 12;
+
+            let hidden = document.querySelectorAll('.brands-served-box .brands-served__item.hidden');
+            for (let i = 0; i < showPerClick; i++) {
+                if (!hidden[i]) return this.style.display = "none";
+
+                hidden[i].classList.remove('hidden');
+            }
+        });
+    }
+}
 
 let animateToBlock = (selector) => {
     $('html, body').stop().animate({

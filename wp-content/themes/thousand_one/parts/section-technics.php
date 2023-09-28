@@ -30,7 +30,7 @@ if (empty($categories)) return false;
 			</div>
 			<!-- /.technics-box -->
 			<?php if (count($categories) > ($end + 1)) { ?>
-				<button class="technics__more" data-page="1">Показать еще</button>
+				<button class="technics__more" data-page="1"><span>Показать еще</span><span><img src="<?= get_template_directory_uri() ?>/images/elements/loader.svg" alt=""></span></button>
 			<?php } ?>
 		</div>
 	</div>

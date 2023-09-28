@@ -574,6 +574,17 @@ body {
   display: flex;
   align-items: stretch;
 }
+.control-box.disable {
+  cursor: not-allowed;
+}
+.control-box.disable input {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.control-box.disable button {
+  opacity: 0.5;
+  pointer-events: none;
+}
 .control-selectBx {
   flex-grow: 1;
   position: relative;
@@ -773,10 +784,26 @@ body {
   font-size: 1rem;
   font-family: "OnestMedium", sans-serif;
   transition: 0.5s cubic-bezier(0.21, 0.44, 0.37, 0.99);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .technics__more:hover {
   background-color: #fff;
   border-color: #fff;
+}
+.technics__more.isLoading span:first-child {
+  display: none;
+}
+.technics__more.isLoading span:last-child {
+  display: block;
+}
+.technics__more span:first-child {
+  display: block;
+}
+.technics__more span:last-child {
+  display: none;
+  animation: around 1s linear infinite;
 }
 @media (max-width: 600px) {
   .technics {
@@ -811,6 +838,11 @@ body {
   width: 20%;
   margin-bottom: 10px;
   position: relative;
+}
+@keyframes around {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 .brands {
   padding-top: 120px;
@@ -858,6 +890,19 @@ body {
 .brands__button:hover {
   background-color: #fff;
   border-color: #fff;
+}
+.brands__button.isLoading span:first-child {
+  display: none;
+}
+.brands__button.isLoading span:last-child {
+  display: block;
+}
+.brands__button span:first-child {
+  display: block;
+}
+.brands__button span:last-child {
+  display: none;
+  animation: around 1s linear infinite;
 }
 @media (max-width: 600px) {
   .brands {
@@ -1720,13 +1765,13 @@ body {
   transition: 0.5s cubic-bezier(0.21, 0.44, 0.37, 0.99);
 }
 .service-info__button:not(:first-child) {
-  margin-top: 14px;
-}
-.service-info__button:last-child {
   background: #F5F5F5;
 }
-.service-info__button:last-child:hover {
+.service-info__button:not(:first-child):hover {
   background: #F0F0F0;
+}
+.service-info__button:not(:first-child) {
+  margin-top: 14px;
 }
 .service-info__button span:first-child {
   padding-right: 10px;
@@ -1873,6 +1918,9 @@ body {
 }
 .brands-served__item {
   font-size: 0.875rem;
+}
+.brands-served__item.hidden {
+  display: none;
 }
 .brands-served__button {
   margin-top: 30px;
