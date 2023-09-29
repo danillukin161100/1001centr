@@ -213,7 +213,7 @@ add_action('after_setup_theme', function () {
 		$image_path = "/images/logo/brands/$image_name";
 
 		if ($test) {
-			return $image_path;
+			return get_template_directory_uri() . $image_path;
 		}
 
 		if (!file_exists($dir_path . $image_path)) {
