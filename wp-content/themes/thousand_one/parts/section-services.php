@@ -3,11 +3,16 @@ $city = get_query_var('city', 'all_cities');
 $cat = get_query_var('categories', 'all_categories');
 $firm = get_query_var('firms', 'all_firms');
 $posts_per_page = 12;
+$paged = (!empty($_GET['page'])) ? $_GET['page'] : 1;
+$paged--;
+$start_key = $paged * $posts_per_page;
+$end_key = $start_key + $posts_per_page - 1;
 
 $args = [
 	'post_type' => 'service',
-	'posts_per_page' => $posts_per_page,
-	'paged' => (!empty($_GET['page'])) ? $_GET['page'] : 1,
+	'posts_per_page' => -1,
+	// 'posts_per_page' => $posts_per_page,
+	// 'paged' => (!empty($_GET['page'])) ? $_GET['page'] : 1,
 ];
 
 if (!empty($city) && $city != 'all_cities') {
@@ -109,7 +114,8 @@ if (gettype($count_pages) != 'integer') {
 			<div class="services-wrapper">
 				<div class="services-inner js-block-changer" id="demo">
 					<ul class="services-box data-container" id="data-container">
-						<?php foreach ($services_arr as $service) { ?>
+						<?php foreach ($services_arr as $key => $service) { ?>
+							<?php if ($key < $start_key) continue; ?>
 							<li>
 								<div class="services__item">
 									<div class="services__item-titleBx">
@@ -150,6 +156,7 @@ if (gettype($count_pages) != 'integer') {
 									</div>
 								</div>
 							</li>
+							<?php if ($key >= $end_key) break; ?>
 						<?php } ?>
 					</ul>
 					<!-- /.services-box -->
@@ -165,7 +172,7 @@ if (gettype($count_pages) != 'integer') {
 
 									<?php if ($count_pages > 4) { ?>
 										<?php if ($count_pages > 5) { ?>
-                                            <span>...</span>
+											<span>...</span>
 										<?php } ?>
 										<li><?= $count_pages ?></li>
 									<?php } ?>
