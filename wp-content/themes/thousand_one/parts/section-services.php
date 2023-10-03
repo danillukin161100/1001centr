@@ -46,6 +46,7 @@ if ($services->have_posts()) {
 			'weekdays' => (!empty(get_field('weekdays'))) ? get_field('weekdays') : ' - ',
 			'weekend' => (!empty(get_field('weekend'))) ? get_field('weekend') : ' - ',
 			'link' => get_permalink(),
+			'title' => get_the_title(),
 		];
 
 		if ($moder = get_field('moder')) {
@@ -115,7 +116,7 @@ if (gettype($count_pages) != 'integer') {
 										<?php if (!empty($service->moder)) { ?>
 											<img src="<?= get_template_directory_uri() ?>/images/services/check.svg" alt="">
 										<?php } ?>
-										<a href="<?= get_the_permalink() ?>" class="services__item-title"><?= get_the_title() ?></a>
+										<a href="<?= $service->link ?>" class="services__item-title"><?= $service->title ?></a>
 									</div>
 									<?php if (!empty($service->address)) { ?>
 										<div class="services__item-info address"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
@@ -186,7 +187,7 @@ if (gettype($count_pages) != 'integer') {
 										<?php if (!empty($service->moder)) { ?>
 											<img src="<?= get_template_directory_uri() ?>/images/services/check.svg" alt="">
 										<?php } ?>
-										<a href="<?= get_the_permalink() ?>" class="services__item-title"><?= get_the_title() ?></a>
+										<a href="<?= $service->link ?>" class="services__item-title"><?= $service->title ?></a>
 									</div>
 									<?php if (!empty($service->address)) { ?>
 										<div class="services__item-info address"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
