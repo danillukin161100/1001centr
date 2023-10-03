@@ -45,38 +45,47 @@
 					<!-- /.region-cityBx -->
 
 					<?php
-					$cities = get_terms([
+					$visible_cities = [
+						12, // Волгоград
+						72, // Красноярск
+						9, // Новосибирск
+						117, // Ростов-на-дону
+						142, // Тюмень
+						33, // Воронеж
+						10, // Казань
+						6, // Москва
+						101, // Омск
+						4, // Самара
+						145, // Уфа
+						11, // Екатеринбург
+						69, // Краснодар
+						8, // Нижний Новгород
+						108, // Пермь
+						7, // Санкт-Петербург
+						122, // Саратов
+						138, // Тольятти
+						21, // Барнаул
+						52, // Ижевск
+						147, // Хабаровск
+						144, // Ульяновск
+					];
+					$cities_for_cookie = get_terms([
 						'taxonomy' => 'city',
 						'hide_empty' => false,
-						'include' => [
-							12, // Волгоград
-							72, // Красноярск
-							9, // Новосибирск
-							117, // Ростов-на-дону
-							142, // Тюмень
-							33, // Воронеж
-							10, // Казань
-							6, // Москва
-							101, // Омск
-							4, // Самара
-							145, // Уфа
-							11, // Екатеринбург
-							69, // Краснодар
-							8, // Нижний Новгород
-							108, // Пермь
-							7, // Санкт-Петербург
-							122, // Саратов
-							138, // Тольятти
-							21, // Барнаул
-							52, // Ижевск
-							147, // Хабаровск
-							144, // Ульяновск
-						]
+						'include' => $visible_cities,
+					]);
+					$cities_over = get_terms([
+						'taxonomy' => 'city',
+						'hide_empty' => false,
+						'exclude' => $visible_cities,
 					]);
 					?>
-					<?php if (!empty($cities)) { ?>
+					<?php if (!empty($cities_for_cookie)) { ?>
 						<div class="region-cities">
-							<?php foreach ($cities as $city) { ?>
+							<?php foreach ($cities_for_cookie as $city) { ?>
+								<div class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
+							<?php } ?>
+							<?php foreach ($cities_over as $city) { ?>
 								<div class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
 							<?php } ?>
 						</div>
