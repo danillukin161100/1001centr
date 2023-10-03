@@ -155,8 +155,7 @@ add_action('after_setup_theme', function () {
 			if ($city != 'all_cities') {
 				$city = get_term_by('slug', $city, 'city');
 				$city_label = (!empty(get_field('variant_2', $city))) ? get_field('variant_2', $city) : $city->name;
-				$result_city = ' в ' . $city_label;
-				// $result_city = mb_strtolower($result_city);
+				$result_city = ' в <span>' . $city_label . '</span>';
 			}
 
 			$result_cat = null;
@@ -175,7 +174,9 @@ add_action('after_setup_theme', function () {
 				$result_firm = ' ' . $firm->name;
 			}
 
-			$result .= $result_cat . $result_firm . $result_city;
+			if (!empty($result_cat)) $result .= $result_cat;
+			if (!empty($result_firm)) $result .= $result_firm;
+			if (!empty($result_city)) $result .= $result_city;
 
 			return $result;
 		}
