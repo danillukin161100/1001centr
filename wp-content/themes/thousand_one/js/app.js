@@ -239,16 +239,6 @@ class SwipeablePopup {
 
 let geocodeApi = '06f41e63-609d-4d88-9c55-cf2900572996'
 document.addEventListener('DOMContentLoaded', function() {
-    //проверка на куки и вставка в hidden
-    // if(getCookie('city')) {
-    //     let cities = document.querySelectorAll('.control-list-city .control-list__link')
-    //     cities.forEach(el => {
-    //         let code = el.dataset.code
-    //         if(code === getCookie('city')) {
-    //             document.querySelector('.search-input-city').value = el.textContent
-    //         }
-    //     })
-    // }
     // установка куки текущего города
     if(document.querySelector('.region-cities')) {
         let cities = document.querySelector('.region-cities'),
@@ -275,6 +265,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // }
 
         document.querySelector('.region').style.maxHeight =  document.querySelector('.region').scrollHeight + 'px'
+        hideCities()
+
+        let cross = document.querySelector('.region__cross')
+        cross.addEventListener('click', () => {
+            setCookie('closeRegion', true, 1)
+        })
     }
 
     if(document.querySelector('input[name="tel"]')) {
@@ -621,6 +617,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 catalogButton.forEach(el => {el.classList.toggle('active')})
                 catalog.classList.toggle('_is-open')
                 toggleBodyLock(catalog.classList.contains('_is-open'))
+
+                if(window.innerWidth > 768) animateToBlock('.header')
             })
         })
 
@@ -644,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navBxMobile.style.top = header.getBoundingClientRect().top + header.clientHeight + 'px'
             catalog.style.top = 0
         }else {
-            catalog.style.top = header.getBoundingClientRect().top + header.clientHeight + 'px'
+            catalog.style.top = document.querySelector('.region-wrapper').scrollHeight + header.scrollHeight + 'px'
         }
     }
 
@@ -760,13 +758,23 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
 
+        //проверка на куки и вставка в hidden
+        if(getCookie('city')) {
+            let cities = document.querySelectorAll('.control-list-city .control-list__link')
+            cities.forEach(el => {
+                let code = el.dataset.code
+                if(code === getCookie('city')) {
+                    document.querySelector('.search-input-city').value = el.textContent
+                }
+            })
+        }
 
         //обработка инпутов фильров
         document.querySelectorAll('.search-input').forEach(input => {
             input.addEventListener('change', (e) => {
                 if(!e.target.value) {
                     e.target.parentNode.querySelector('input[type="hidden"]').value = ''
-                    sendFilters(generateFilterData())
+                    // sendFilters(generateFilterData())
                     return false;
                 }
                 let list = e.target.parentNode.querySelector('.control-list'),
@@ -778,6 +786,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 sendFilters(generateFilterData())
+            })
+        })
+        //обработка инпутов фильров
+        document.querySelectorAll('.search-input').forEach(input => {
+            input.addEventListener('keyup', (e) => {
+                if(!e.target.value) {
+                    e.target.parentNode.querySelector('input[type="hidden"]').value = ''
+                    sendFilters(generateFilterData())
+                    return false;
+                }
             })
         })
 
@@ -816,99 +834,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if(document.querySelector('.brands-served')) {
         hideElements()
-    }
-
-    if(document.querySelector('.paginationjs')) {
-        let pagination = document.querySelector('.paginationjs')
-
-        let totalPages = document.querySelector('.paginationjs ul li:last-child').textContent; // Замените на актуальное количество страниц
-        let currentPage = 5; // Замените на активную страницу
-
-        let  updatePagination = () => {
-            let paginationHtml = '';
-
-            if (window.innerWidth < 768) { // Адаптация для мобильных устройств (примерная ширина)
-                if (totalPages <= 3) {
-                    for (let i = 1; i <= totalPages; i++) {
-                        paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                    }
-                } else {
-                    if (currentPage <= 2) {
-                        for (let i = 1; i <= 3; i++) {
-                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                        }
-                        paginationHtml += '<span class="ellipsis">...</span>';
-                        paginationHtml += '<li>' + totalPages + '</li>';
-                    } else if (currentPage >= totalPages - 1) {
-                        paginationHtml += '<li>1</li>';
-                        paginationHtml += '<span class="ellipsis">...</span>';
-                        for (let i = totalPages - 2; i <= totalPages; i++) {
-                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                        }
-                    } else {
-                        paginationHtml += '<li>1</li>';
-                        paginationHtml += '<span class="ellipsis">...</span>';
-                        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                        }
-                        // paginationHtml += '<span class="ellipsis">...</li>';
-                        paginationHtml += '<li>' + totalPages + '</li>';
-                    }
-                }
-            } else { // Адаптация для десктопов и планшетов
-                if (totalPages <= 7) {
-                    for (let i = 1; i <= totalPages; i++) {
-                        paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                    }
-                } else {
-                    if (currentPage <= 3) {
-                        for (let i = 1; i <= 4; i++) {
-                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                        }
-                        paginationHtml += '<span class="ellipsis">...</span>';
-                        paginationHtml += '<li>' + totalPages + '</li>';
-                    } else if (currentPage >= totalPages - 2) {
-                        paginationHtml += '<li>1</li>';
-                        paginationHtml += '<span class="ellipsis">...</span>';
-                        for (let i = totalPages - 3; i <= totalPages; i++) {
-                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                        }
-                    } else {
-                        paginationHtml += '<li>1</li>';
-                        paginationHtml += '<span class="ellipsis">...</span>';
-                        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
-                        }
-                        paginationHtml += '<span class="ellipsis">...</span>';
-                        paginationHtml += '<li>' + totalPages + '</li>';
-                    }
-                }
-            }
-
-            $(".paginationjs ul").html(paginationHtml);
-        }
-
-        pagination.addEventListener('click', (e) => {
-            console.log(e.target.tagName)
-            if(e.target.tagName == 'LI') {
-                let clickedPage = currentPage = parseInt(e.target.textContent)
-                document.querySelectorAll('.paginationjs ul li').forEach(el => el.classList.remove('active'))
-                e.target.classList.add('active')
-                animateToBlock('.services-box')
-
-                updatePagination()
-                sendRequest('GET', `${location.href}?page=${clickedPage}`, '', 'html', data => {
-                    // Парсим полученный HTML-код в jQuery объект
-                    const $loadedContent = $('<div>').html(data);
-
-                    // Найдем элемент #content-to-append в загруженном содержимом
-                    const $contentToAppend = $loadedContent.find(`.services-box li`);
-
-
-                    $(`.services-box `).html($contentToAppend);
-                })
-            }
-        })
     }
 });
 
@@ -1010,6 +935,26 @@ let hideElements = () => {
         });
     }
 }
+let hideCities = () => {
+    let allServicesItem = document.querySelectorAll('.region-cities__item')
+
+    let more = document.querySelectorAll('.region__more');
+
+    for (let i = 0; i < more.length; i++) {
+        more[i].addEventListener('click', function () {
+            let showPerClick = allServicesItem.length;
+
+            let hidden = document.querySelectorAll('.region-cities__item.hidden');
+            for (let i = 0; i < showPerClick; i++) {
+                if (!hidden[i]) return this.style.display = "none";
+
+                hidden[i].classList.remove('hidden');
+                document.querySelector('.catalog').style.top = document.querySelector('.region').scrollHeight + document.querySelector('.header').scrollHeight - 40 + 'px'
+                document.querySelector('.region').style.maxHeight =  document.querySelector('.region').scrollHeight + 'px'
+            }
+        });
+    }
+}
 
 let animateToBlock = (selector) => {
     $('html, body').stop().animate({
@@ -1048,7 +993,6 @@ let getCookie = (name) => {
 }
 
 function sendRequest(type = 'POST', link, data, dataType = 'json',  callback = json => {}) {
-    console.log(data)
     $.ajax({
         type: type,
         url: `${link}`,

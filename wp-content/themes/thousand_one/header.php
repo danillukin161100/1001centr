@@ -23,7 +23,7 @@
 
 <body <?php body_class() ?>>
 
-	<?php if (empty($_COOKIE['city'])) { ?>
+	<?php if (empty($_COOKIE['city']) && empty($_COOKIE['closeRegion'])) { ?>
 		<div class="_overlay-bg modal-white region _is-open">
 			<div class="region-wrapper">
 				<div class="region__container">
@@ -93,6 +93,9 @@
 						</div>
 						<!-- /.region-cities -->
 					<?php } ?>
+                    <div class="region-buttonBx">
+                        <button class="region__more region__button">Показать еще</button>
+                    </div>
 					<p class="region__notice">Выбором или отказом от выбора региона вы подтверждаете свое совершеннолетие, даете согласие на обработку персональных данных, а также передачу информации от них третьим лицам, соглашаетесь с условиями пользования сайта</p>
 				</div>
 				<!-- /.region__container -->

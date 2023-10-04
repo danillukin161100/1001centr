@@ -512,6 +512,9 @@ body {
   line-height: 3.4375rem;
   font-family: "OnestBold", sans-serif;
 }
+.content__title span {
+  color: #61CD81;
+}
 .content__subtitle {
   margin-top: 30px;
   line-height: 1.25rem;
@@ -594,6 +597,10 @@ body {
   opacity: 1;
   pointer-events: auto;
 }
+.control-selectBx.active:after {
+  transform: scale(1, -1);
+  margin-top: -10px;
+}
 .control-selectBx:last-child {
   width: 100%;
   max-width: 250px;
@@ -611,6 +618,7 @@ body {
   transform: translateY(-50%);
   pointer-events: none;
   color: #181D22;
+  transition: 0.4s;
 }
 .control-selectBx select, .control-selectBx input {
   width: 100%;
@@ -2647,9 +2655,19 @@ body {
   font-family: "OnestMedium", sans-serif;
   margin-left: 20px;
 }
+.region-buttonBx {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 700px;
+  padding-top: 30px;
+}
+.region__more {
+  margin: 0 auto;
+}
 .region-cities {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   max-width: 700px;
   padding-top: 32px;
   grid-gap: 5px;
@@ -2658,6 +2676,9 @@ body {
   font-size: 0.875rem;
   line-height: normal;
   cursor: pointer;
+}
+.region-cities__item.hidden {
+  display: none;
 }
 .region__notice {
   margin-top: 32px;
