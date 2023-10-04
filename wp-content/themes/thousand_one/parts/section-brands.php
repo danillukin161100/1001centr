@@ -2,6 +2,7 @@
 $firms = get_terms([
 	'taxonomy' => 'firms',
 	// 'hide_empty' => false,
+	'exclude' => [588],
 ]);
 $iteration = (isset($_GET['firm_iteration'])) ? $_GET['firm_iteration'] : 1;
 $iteration--;

@@ -1,6 +1,7 @@
 <?php
 $categories = get_terms([
 	'taxonomy' => 'categories',
+	'exclude' => [587],
 ]);
 $iteration = (isset($_GET['cat_iteration'])) ? $_GET['cat_iteration'] : 1;
 $iteration--;

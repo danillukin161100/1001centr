@@ -14,6 +14,7 @@ $cities_gerb = get_terms([
 	'taxonomy' => 'city',
 	'hide_empty' => false,
 	'meta_key' => 'gerb',
+	'exclude' => [589],
 ]);
 
 if (empty($cities)) return false;

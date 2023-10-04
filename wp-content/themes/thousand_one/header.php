@@ -88,7 +88,7 @@
 								<div class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
 							<?php } ?>
 							<?php foreach ($cities_over as $city) { ?>
-								<div class="region-cities__item" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
+								<div class="region-cities__item hidden" data-city="<?= $city->term_id ?>"><?= $city->name ?></div>
 							<?php } ?>
 						</div>
 						<!-- /.region-cities -->
