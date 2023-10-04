@@ -68,11 +68,13 @@
 						52, // Ижевск
 						147, // Хабаровск
 						144, // Ульяновск
+						162, // Ярославль
 					];
 					$cities_for_cookie = get_terms([
 						'taxonomy' => 'city',
 						'hide_empty' => false,
 						'include' => $visible_cities,
+						'orderby' => 'include',
 					]);
 					$cities_over = get_terms([
 						'taxonomy' => 'city',

@@ -18,6 +18,9 @@ if (($cities = get_the_terms(get_the_ID(), 'city')) && !empty($cities)) {
 	$city = array_shift($cities);
 }
 $address = get_field('address');
+
+$coords = get_field('coords');
+$coords = explode('|', $coords);
 ?>
 <section class="service" data-service-id="<?= get_the_ID() ?>">
 	<div class="service__container">
@@ -44,7 +47,7 @@ $address = get_field('address');
 					</div>
 					<!-- /.service-titleBx -->
 					<div class="service-map">
-						<div id="service-map" class="js-map" data-addr="Hardwarespb"></div>
+						<div id="service-map" class="js-map" data-addr="Hardwarespb" <?= (!empty($coords[0])) ? 'data-x="' . $coords[0] . '"' : '' ?> <?= (!empty($coords[1])) ? 'data-y="' . $coords[1] . '"' : '' ?>></div>
 					</div>
 				</div>
 				<div class="section_m about">
