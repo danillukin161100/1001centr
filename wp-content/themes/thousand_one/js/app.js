@@ -409,21 +409,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 let results = [];
                 let obj = {}
 
-                sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=${geocodeApi}&geocode=${item.dataset.city}${item.textContent.trim()}&format=json`,false, 'json', json => {
-                    let [y, x] = json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ')
-                    addressArr.push(json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' '))
+                if(item.dataset.x && item.dataset.y){
                     obj = {
                         "infoPoint": "<svg class='services__icon {% if properties.active %} active{% endif %}' width='44' height='53' viewBox='0 0 44 53' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(#filter0_d_246_59)'><circle cx='22.4547' cy='22.455' r='7.72745' fill='white'/><path d='M38.3127 29.5423L38.3127 29.5424L38.3172 29.5335C39.1242 27.9544 39.0612 25.915 37.7376 24.3296C36.8789 23.3011 36.889 21.8027 37.7614 20.7859C40.272 17.8596 38.4271 13.3196 34.587 12.974C33.2526 12.8539 32.2002 11.7873 32.0981 10.4514C31.8041 6.60696 27.2893 4.70121 24.3296 7.1722C23.3011 8.03086 21.8027 8.02078 20.7859 7.14837C17.8596 4.63781 13.3196 6.48268 12.974 10.3228C12.8539 11.6572 11.7873 12.7096 10.4514 12.8117C6.60696 13.1057 4.70121 17.6205 7.1722 20.5802C8.03086 21.6087 8.02078 23.107 7.14837 24.1239C5.4001 26.1617 5.77148 28.9705 7.42392 30.6029L19.9202 46.7551C21.2033 48.4135 23.7065 48.4153 24.9918 46.7586L37.3829 30.7883L37.3841 30.787C37.4023 30.7668 37.4279 30.7382 37.459 30.703C37.5209 30.633 37.606 30.535 37.6985 30.4236C37.8651 30.223 38.1198 29.9036 38.2726 29.6188L38.2726 29.6188L38.2772 29.61L38.3127 29.5423ZM29.1823 22.4549C29.1823 26.1704 26.1704 29.1823 22.4549 29.1823C18.7394 29.1823 15.7274 26.1704 15.7274 22.4549C15.7274 18.7394 18.7394 15.7274 22.4549 15.7274C26.1704 15.7274 29.1823 18.7394 29.1823 22.4549Z' fill='#0D2938' stroke='white' stroke-width='2'/></g><defs><filter id='filter0_d_246_59' x='0.998779' y='0.99707' width='42.9138' height='52.0029' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/><feOffset/><feGaussianBlur stdDeviation='2'/><feComposite in2='hardAlpha' operator='out'/><feColorMatrix type='matrix' values='0 0 0 0 0.0197222 0 0 0 0 0.0666667 0 0 0 0 0.0407323 0 0 0 0.12 0'/><feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow_246_59'/><feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow_246_59' result='shape'/></filter></defs></svg>",
                         "help": item.textContent,
-                        "latitude": x,
-                        "longitude": y
+                        "latitude": item.dataset.x,
+                        "longitude": item.dataset.y
                     }
                     results.push(createPlacemark(obj));
 
                     if (addressArr.length === address.length) {
                         setMapCenterAndZoom(myMap, addressArr);
                     }
-                })
+                }else{
+                    sendRequest('GET', `https://geocode-maps.yandex.ru/1.x/?apikey=${geocodeApi}&geocode=${item.dataset.city}${item.textContent.trim()}&format=json`,false, 'json', json => {
+                        let [y, x] = json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ')
+                        addressArr.push(json.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' '))
+                        obj = {
+                            "infoPoint": "<svg class='services__icon {% if properties.active %} active{% endif %}' width='44' height='53' viewBox='0 0 44 53' fill='none' xmlns='http://www.w3.org/2000/svg'><g filter='url(#filter0_d_246_59)'><circle cx='22.4547' cy='22.455' r='7.72745' fill='white'/><path d='M38.3127 29.5423L38.3127 29.5424L38.3172 29.5335C39.1242 27.9544 39.0612 25.915 37.7376 24.3296C36.8789 23.3011 36.889 21.8027 37.7614 20.7859C40.272 17.8596 38.4271 13.3196 34.587 12.974C33.2526 12.8539 32.2002 11.7873 32.0981 10.4514C31.8041 6.60696 27.2893 4.70121 24.3296 7.1722C23.3011 8.03086 21.8027 8.02078 20.7859 7.14837C17.8596 4.63781 13.3196 6.48268 12.974 10.3228C12.8539 11.6572 11.7873 12.7096 10.4514 12.8117C6.60696 13.1057 4.70121 17.6205 7.1722 20.5802C8.03086 21.6087 8.02078 23.107 7.14837 24.1239C5.4001 26.1617 5.77148 28.9705 7.42392 30.6029L19.9202 46.7551C21.2033 48.4135 23.7065 48.4153 24.9918 46.7586L37.3829 30.7883L37.3841 30.787C37.4023 30.7668 37.4279 30.7382 37.459 30.703C37.5209 30.633 37.606 30.535 37.6985 30.4236C37.8651 30.223 38.1198 29.9036 38.2726 29.6188L38.2726 29.6188L38.2772 29.61L38.3127 29.5423ZM29.1823 22.4549C29.1823 26.1704 26.1704 29.1823 22.4549 29.1823C18.7394 29.1823 15.7274 26.1704 15.7274 22.4549C15.7274 18.7394 18.7394 15.7274 22.4549 15.7274C26.1704 15.7274 29.1823 18.7394 29.1823 22.4549Z' fill='#0D2938' stroke='white' stroke-width='2'/></g><defs><filter id='filter0_d_246_59' x='0.998779' y='0.99707' width='42.9138' height='52.0029' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'><feFlood flood-opacity='0' result='BackgroundImageFix'/><feColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/><feOffset/><feGaussianBlur stdDeviation='2'/><feComposite in2='hardAlpha' operator='out'/><feColorMatrix type='matrix' values='0 0 0 0 0.0197222 0 0 0 0 0.0666667 0 0 0 0 0.0407323 0 0 0 0.12 0'/><feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow_246_59'/><feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow_246_59' result='shape'/></filter></defs></svg>",
+                            "help": item.textContent,
+                            "latitude": x,
+                            "longitude": y
+                        }
+                        results.push(createPlacemark(obj));
+
+                        if (addressArr.length === address.length) {
+                            setMapCenterAndZoom(myMap, addressArr);
+                        }
+                    })
+                }
                 // data.points.forEach(function(item, index) {
                 //     arr_adress.push(item);
                 // });
@@ -642,7 +656,9 @@ document.addEventListener('DOMContentLoaded', function() {
             navBxMobile.style.top = header.getBoundingClientRect().top + header.clientHeight + 'px'
             catalog.style.top = 0
         }else {
-            catalog.style.top = document.querySelector('.region-wrapper').scrollHeight + header.scrollHeight + 'px'
+            if(document.querySelector('.region-wrapper')) {
+                catalog.style.top = document.querySelector('.region-wrapper').scrollHeight + header.scrollHeight + 'px'
+            }
         }
     }
 
@@ -834,6 +850,135 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if(document.querySelector('.brands-served')) {
         hideElements()
+    }
+
+    if(document.querySelector('.paginationjs')) {
+        let pagination = document.querySelector('.paginationjs')
+
+        let totalPages = document.querySelector('.paginationjs ul li:last-child').textContent; // Замените на актуальное количество страниц
+
+        let  updatePagination = (page) => {
+            let currentPage = page; // Замените на активную страницу
+            let paginationHtml = '';
+
+            if (window.innerWidth < 768) { // Адаптация для мобильных устройств (примерная ширина)
+                if (totalPages <= 3) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                    }
+                } else {
+                    if (currentPage <= 2) {
+                        for (let i = 1; i <= 3; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    } else if (currentPage >= totalPages - 1) {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = totalPages - 2; i <= totalPages; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                    } else {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        // paginationHtml += '<span class="ellipsis">...</li>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    }
+                }
+            } else { // Адаптация для десктопов и планшетов
+                if (totalPages <= 7) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                    }
+                } else {
+                    if (currentPage <= 3) {
+                        for (let i = 1; i <= 4; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    } else if (currentPage >= totalPages - 2) {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = totalPages - 3; i <= totalPages; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                    } else {
+                        paginationHtml += '<li>1</li>';
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                            paginationHtml += '<li' + (i === currentPage ? ' class="active"' : '') + '>' + i + '</li>';
+                        }
+                        paginationHtml += '<span class="ellipsis">...</span>';
+                        paginationHtml += '<li>' + totalPages + '</li>';
+                    }
+                }
+            }
+
+            $(".paginationjs ul").html(paginationHtml);
+        }
+
+        let getServices = (page) => {
+            animateToBlock('.services-box')
+            sendRequest('GET', `${location.href}?page=${page}`, '', 'html', data => {
+                // Парсим полученный HTML-код в jQuery объект
+                const $loadedContent = $('<div>').html(data);
+
+                // Найдем элемент #content-to-append в загруженном содержимом
+                const $contentToAppend = $loadedContent.find(`.services-box li`);
+
+
+                $(`.services-box `).html($contentToAppend);
+            })
+        }
+
+        pagination.addEventListener('click', (e) => {
+            if(e.target.tagName == 'LI') {
+                let clickedPage = parseInt(e.target.textContent)
+                document.querySelectorAll('.paginationjs ul li').forEach(el => el.classList.remove('active'))
+                e.target.classList.add('active')
+
+                getServices(clickedPage)
+                updatePagination(clickedPage)
+            }
+        })
+
+        let paginationNext = document.querySelector('.paginationjs-next'),
+            paginationPrev = document.querySelector('.paginationjs-prev')
+
+        paginationNext.addEventListener('click', () => {
+            let currentPageOfArrow = document.querySelector('.paginationjs ul li.active'),
+                page = parseInt(currentPageOfArrow.textContent) + 1,
+                lastPage = document.querySelector('.paginationjs ul li:last-child').textContent
+
+            if(page > parseInt(lastPage)) {
+                document.querySelector('.paginationjs ul li:last-child').classList.add('active')
+            }else{
+                currentPageOfArrow.classList.remove('active')
+                currentPageOfArrow.nextElementSibling.classList.add('active')
+                getServices(page)
+                updatePagination(page)
+            }
+        })
+
+        paginationPrev.addEventListener('click', () => {
+            let currentPageOfArrow = document.querySelector('.paginationjs ul li.active'),
+                page = parseInt(currentPageOfArrow.textContent) - 1,
+                lastPage = document.querySelector('.paginationjs ul li:last-child').textContent
+
+            if(page < 1) {
+                document.querySelector('.paginationjs ul li:first-child').classList.add('active')
+            }else{
+                currentPageOfArrow.classList.remove('active')
+                currentPageOfArrow.previousElementSibling.classList.add('active')
+                getServices(page)
+                updatePagination(page)
+            }
+        })
     }
 });
 
