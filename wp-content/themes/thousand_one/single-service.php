@@ -111,28 +111,58 @@ $coords = explode('|', $coords);
 				<?php } ?>
 				<!-- /.brands-served -->
 
-				<div class="section_m section_white question">
-					<div class="question-inner">
-						<div class="question-main">
-							<p class="title question__title">Задайте свой вопрос мастеру этого сервиса напрямую</p>
-							<form action="#" class="question-form">
-								<div class="question-inputBx"><input required type="text" name="tel" placeholder="Номер телефона"></div>
-								<div class="question-inputBx">
-									<textarea name="problem" id="" cols="30" rows="10" required placeholder="Ваш вопрос"></textarea>
-								</div>
-								<button class="pb question__button" type="submit">Написать мастеру</button>
-							</form>
-							<!-- /.question-form -->
-						</div>
-						<!-- /.question-main -->
-						<div class="question-imgBx">
-							<img src="<?= get_template_directory_uri() ?>/images/question/main.svg" alt="">
-						</div>
-						<!-- /.question-imgBx -->
-					</div>
-					<!-- /.question-inner -->
-				</div>
-				<!-- /.question -->
+                <div class="faq">
+                    <p class="faq__title title">Вопросы и ответы</p>
+                    <!-- /.faq__title -->
+                    <div class="faq-box">
+                        <div class="faq__item">
+                            <p class="faq__item-title">Сколько времени занимает диагностика?</p>
+                            <div class="faq__item-answer">
+                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
+                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
+                                    увеличиться до нескольких дней.</p>
+                            </div>
+                        </div>
+                        <div class="faq__item">
+                            <p class="faq__item-title">Как предоставляется гарантия на ремонт?</p>
+                            <div class="faq__item-answer">
+                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
+                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
+                                    увеличиться до нескольких дней.</p>
+                            </div>
+                        </div>
+                        <div class="faq__item">
+                            <p class="faq__item-title">Сколько времени занимает ремонт?</p>
+                            <div class="faq__item-answer">
+                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
+                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
+                                    увеличиться до нескольких дней.</p>
+                            </div>
+                        </div>
+                        <div class="faq__item">
+                            <p class="faq__item-title">Есть ли у вас выездной мастер?</p>
+                            <div class="faq__item-answer">
+                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
+                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
+                                    увеличиться до нескольких дней.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.faq-box -->
+                </div>
+                <!-- /.faq -->
 			</div>
 			<div class="service-info">
 				<div class="mobile service-titleBx">
@@ -196,6 +226,16 @@ $coords = explode('|', $coords);
 				<? /*
 				<div class="service-info__address">Проспект Ветеранов</div>
 				*/ ?>
+
+                <div class="service-info-data">
+                    <a href="mailto: info@Hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/mail.svg" alt=""><span>info@Hardwarespb.ru</span></a>
+                    <a href="mailto: hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/globe.svg" alt=""><span>hardwarespb.ru</span></a>
+                </div>
+                <!-- /.service-info-data -->
+                <p class="service-info__date">
+                    Дата добавления: 29.07.2023
+                </p>
+                <!-- /.service__date -->
 				<div class="service-info-buttonBx">
 					<button class="pb service-info__button" data-type="repair">
 						<span>

@@ -980,6 +980,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
     }
+
+    if(document.querySelector('.faq')) {
+        let faqItems = document.querySelectorAll('.faq__item')
+
+        faqItems.forEach(item => {
+            item.addEventListener('click', () => {
+                let content = item.querySelector('.faq__item-answer');
+
+                if(content.style.maxHeight){
+                    content.style.maxHeight = null;
+                    item.classList.remove('active');
+                }else{
+                    document.querySelectorAll('.faq__item-answer').forEach(el => el.style.maxHeight = null);
+                    faqItems.forEach(el => el.classList.remove('active'));
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    item.classList.add('active');
+                }
+
+            })
+        })
+    }
 });
 
 // function simpleTemplating(data) {
