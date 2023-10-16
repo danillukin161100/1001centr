@@ -76,6 +76,12 @@ if ($services->have_posts()) {
 			$service_data->phone = phoneLink($phones[0]['number']);
 		}
 
+		if ($coords = get_field('coords')) {
+			$coords = explode('|', $coords);
+			$service_data->x = $coords[0];
+			$service_data->y = $coords[1];
+		}
+
 		$services_arr[] = $service_data;
 	endwhile;
 }
@@ -127,7 +133,7 @@ if (gettype($count_pages) != 'integer') {
 									<?php if (!empty($service->address)) { ?>
 										<div class="services__item-info address"><img src="<?= get_template_directory_uri() ?>/images/services/address.svg" alt="">
 											<div class="services__item-info-main">
-												<p class="services__item-info-address" data-city="<?= (!empty($service->city)) ? $service->city->name : '' ?>"><?= $service->address ?></p>
+												<p class="services__item-info-address" <?= (!empty($service->x)) ? 'data-x="' . $service->x . '"' : '' ?> <?= (!empty($service->y)) ? 'data-y="' . $service->y . '"' : '' ?> data-city="<?= (!empty($service->city)) ? $service->city->name : '' ?>"><?= $service->address ?></p>
 											</div>
 										</div>
 									<?php } ?>
