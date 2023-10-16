@@ -96,8 +96,23 @@ $coords = explode('|', $coords);
 				<!-- /.about -->
 
 				<?php if (($firms = get_the_terms(get_the_ID(), 'firms')) && !empty($firms)) { ?>
-					<div class="section_m section_white brands-served">
+					<div class="section_m section_white brands-served brands-more">
 						<p class="title brands-served__title">Обслуживаемые бренды</p>
+						<!-- /.brands-served__title title -->
+						<div class="brands-served-box">
+							<?php foreach ($firms as $firm) { ?>
+								<div class="brands-served__item"><?= $firm->name ?></div>
+							<?php } ?>
+						</div>
+						<!-- /.brands-served-box -->
+						<button class="brands-served__button">Показать ещё</button>
+						<!-- /.brands-served__button -->
+					</div>
+				<?php } ?>
+				<!-- /.brands-served -->
+				<?php if (($firms = get_the_terms(get_the_ID(), 'firms')) && !empty($firms)) { ?>
+					<div class="section_m section_white brands-served service-technics-more">
+						<p class="title brands-served__title">Ремонтируем технику</p>
 						<!-- /.brands-served__title title -->
 						<div class="brands-served-box">
 							<?php foreach ($firms as $firm) { ?>

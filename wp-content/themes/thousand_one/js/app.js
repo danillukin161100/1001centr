@@ -849,7 +849,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if(document.querySelector('.brands-served')) {
-        hideElements()
+        hideElements('.brands-more .brands-served__item', '.brands-more .brands-served__button')
+        hideElements('.service-technics-more .brands-served__item', '.service-technics-more .brands-served__button')
     }
 
     if(document.querySelector('.paginationjs')) {
@@ -1079,20 +1080,20 @@ $('.svg img').each(function () {
 
 });
 
-let hideElements = () => {
-    let allServicesItem = document.querySelectorAll('.brands-served__item')
+let hideElements = ($items, $more) => {
+    let allServicesItem = document.querySelectorAll($items)
 
     for (let i = 12; i < allServicesItem.length; i++) {
         allServicesItem[i].classList.add('hidden')
     }
 
-    let more = document.querySelectorAll('.brands-served__button');
+    let more = document.querySelectorAll($more);
 
     for (let i = 0; i < more.length; i++) {
         more[i].addEventListener('click', function () {
             let showPerClick = 12;
 
-            let hidden = document.querySelectorAll('.brands-served-box .brands-served__item.hidden');
+            let hidden = document.querySelectorAll(`${$items}.hidden`);
             for (let i = 0; i < showPerClick; i++) {
                 if (!hidden[i]) return this.style.display = "none";
 
