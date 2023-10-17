@@ -21,6 +21,21 @@ $address = get_field('address');
 
 $coords = get_field('coords');
 $coords = explode('|', $coords);
+
+$content = get_the_content();
+$primaries = [];
+if ($home_repairs = get_field('home_repairs')) {
+	$primaries['home_repairs'] = $home_repairs;
+}
+if ($setting_to_client = get_field('setting_to_client')) {
+	$primaries['setting_to_client'] = $setting_to_client;
+}
+if ($delivery_to_client = get_field('delivery_to_client')) {
+	$primaries['delivery_to_client'] = $delivery_to_client;
+}
+if ($sale_of_spare = get_field('sale_of_spare')) {
+	$primaries['sale_of_spare'] = $sale_of_spare;
+}
 ?>
 <section class="service" data-service-id="<?= get_the_ID() ?>">
 	<div class="service__container">
@@ -50,49 +65,47 @@ $coords = explode('|', $coords);
 						<div id="service-map" class="js-map" data-addr="Hardwarespb" <?= (!empty($coords[0])) ? 'data-x="' . $coords[0] . '"' : '' ?> <?= (!empty($coords[1])) ? 'data-y="' . $coords[1] . '"' : '' ?>></div>
 					</div>
 				</div>
-				<div class="section_m about">
-					<div class="section_white about-inner">
-						<p class="title about__title">О сервисе</p>
-						<?php if ($content = get_the_content()) { ?>
-							<div class="about__desc"><?= apply_filters('the_content', $content) ?></div>
-						<?php } ?>
-						<!-- /.about__desc -->
-						<div class="about-box">
-							<?php if ($home_repairs = get_field('home_repairs')) { ?>
-								<div class="about__item">
-									<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/1.svg" alt=""></div>
-									<p class="about__item-title">Выезд мастера на дом</p>
+				<?php if (!empty($content) || !empty($primaries)) { ?>
+					<div class="section_m about">
+						<div class="section_white about-inner">
+							<p class="title about__title">О сервисе</p>
+							<?php if (!empty($content)) { ?>
+								<div class="about__desc"><?= apply_filters('the_content', $content) ?></div>
+							<?php } ?>
+							<!-- /.about__desc -->
+							<?php if (!empty($primaries)) { ?>
+								<div class="about-box">
+									<?php if (!empty($primaries['home_repairs'])) { ?>
+										<div class="about__item">
+											<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/1.svg" alt=""></div>
+											<p class="about__item-title">Выезд мастера на дом</p>
+										</div>
+									<?php } ?>
+									<?php if (!empty($primaries['setting_to_client'])) { ?>
+										<div class="about__item">
+											<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/2.svg" alt=""></div>
+											<p class="about__item-title">Установка и подключение</p>
+										</div>
+									<?php } ?>
+									<?php if (!empty($primaries['delivery_to_client'])) { ?>
+										<div class="about__item">
+											<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/3.svg" alt=""></div>
+											<p class="about__item-title">Доставка оборудования</p>
+										</div>
+									<?php } ?>
+									<?php if (!empty($primaries['sale_of_spare'])) { ?>
+										<div class="about__item">
+											<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/5.svg" alt=""></div>
+											<p class="about__item-title">Продажа запасных частей</p>
+										</div>
+									<?php } ?>
 								</div>
 							<?php } ?>
-							<?php if ($setting_to_client = get_field('setting_to_client')) { ?>
-								<div class="about__item">
-									<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/2.svg" alt=""></div>
-									<p class="about__item-title">Установка и подключение</p>
-								</div>
-							<?php } ?>
-							<?php if ($delivery_to_client = get_field('delivery_to_client')) { ?>
-								<div class="about__item">
-									<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/3.svg" alt=""></div>
-									<p class="about__item-title">Доставка оборудования</p>
-								</div>
-							<?php } ?>
-							<?php if ($sale_of_spare = get_field('sale_of_spare')) { ?>
-								<?php /*
-								<div class="about__item">
-									<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/4.svg" alt=""></div>
-									<p class="about__item-title">Можно задать вопрос через сайт</p>
-								</div>
-								*/ ?>
-								<div class="about__item">
-									<div class="about__item-imgBx"><img src="<?= get_template_directory_uri() ?>/images/about/5.svg" alt=""></div>
-									<p class="about__item-title">Продажа запасных частей</p>
-								</div>
-							<?php } ?>
+							<!-- /.about-box -->
 						</div>
 						<!-- /.about-box -->
 					</div>
-					<!-- /.about-box -->
-				</div>
+				<?php } ?>
 				<!-- /.about -->
 
 				<?php if (($firms = get_the_terms(get_the_ID(), 'firms')) && !empty($firms)) { ?>
@@ -101,7 +114,7 @@ $coords = explode('|', $coords);
 						<!-- /.brands-served__title title -->
 						<div class="brands-served-box">
 							<?php foreach ($firms as $firm) { ?>
-								<div class="brands-served__item"><?= $firm->name ?></div>
+								<div class="brands-served__item"><a href="<?= getFirmsPermalink($firm) ?>"><?= $firm->name ?></a></div>
 							<?php } ?>
 						</div>
 						<!-- /.brands-served-box -->
@@ -110,13 +123,13 @@ $coords = explode('|', $coords);
 					</div>
 				<?php } ?>
 				<!-- /.brands-served -->
-				<?php if (($firms = get_the_terms(get_the_ID(), 'firms')) && !empty($firms)) { ?>
+				<?php if (($categories = get_the_terms(get_the_ID(), 'categories')) && !empty($categories)) { ?>
 					<div class="section_m section_white brands-served service-technics-more">
 						<p class="title brands-served__title">Ремонтируем технику</p>
 						<!-- /.brands-served__title title -->
 						<div class="brands-served-box">
-							<?php foreach ($firms as $firm) { ?>
-								<div class="brands-served__item"><?= $firm->name ?></div>
+							<?php foreach ($categories as $category) { ?>
+								<div class="brands-served__item"><a href="<?= getCategoriesPermalink($category) ?>"><?= $category->name ?></a></div>
 							<?php } ?>
 						</div>
 						<!-- /.brands-served-box -->
@@ -126,58 +139,58 @@ $coords = explode('|', $coords);
 				<?php } ?>
 				<!-- /.brands-served -->
 
-                <div class="faq">
-                    <p class="faq__title title">Вопросы и ответы</p>
-                    <!-- /.faq__title -->
-                    <div class="faq-box">
-                        <div class="faq__item">
-                            <p class="faq__item-title">Сколько времени занимает диагностика?</p>
-                            <div class="faq__item-answer">
-                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
-                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
-                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
-                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
-                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
-                                    увеличиться до нескольких дней.</p>
-                            </div>
-                        </div>
-                        <div class="faq__item">
-                            <p class="faq__item-title">Как предоставляется гарантия на ремонт?</p>
-                            <div class="faq__item-answer">
-                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
-                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
-                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
-                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
-                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
-                                    увеличиться до нескольких дней.</p>
-                            </div>
-                        </div>
-                        <div class="faq__item">
-                            <p class="faq__item-title">Сколько времени занимает ремонт?</p>
-                            <div class="faq__item-answer">
-                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
-                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
-                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
-                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
-                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
-                                    увеличиться до нескольких дней.</p>
-                            </div>
-                        </div>
-                        <div class="faq__item">
-                            <p class="faq__item-title">Есть ли у вас выездной мастер?</p>
-                            <div class="faq__item-answer">
-                                <p class="faq__item-text">Обычно диагностика проводится в день приема техники и
-                                    занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
-                                    техники, срок диагностики может увеличиться до нескольких дней. Обычно
-                                    диагностика проводится в день приема техники и занимает от нескольких часов. Но,
-                                    в зависимости от сложности и состояния вашей техники, срок диагностики может
-                                    увеличиться до нескольких дней.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.faq-box -->
-                </div>
-                <!-- /.faq -->
+				<div class="faq">
+					<p class="faq__title title">Вопросы и ответы</p>
+					<!-- /.faq__title -->
+					<div class="faq-box">
+						<div class="faq__item">
+							<p class="faq__item-title">Сколько времени занимает диагностика?</p>
+							<div class="faq__item-answer">
+								<p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+									занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+									техники, срок диагностики может увеличиться до нескольких дней. Обычно
+									диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+									в зависимости от сложности и состояния вашей техники, срок диагностики может
+									увеличиться до нескольких дней.</p>
+							</div>
+						</div>
+						<div class="faq__item">
+							<p class="faq__item-title">Как предоставляется гарантия на ремонт?</p>
+							<div class="faq__item-answer">
+								<p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+									занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+									техники, срок диагностики может увеличиться до нескольких дней. Обычно
+									диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+									в зависимости от сложности и состояния вашей техники, срок диагностики может
+									увеличиться до нескольких дней.</p>
+							</div>
+						</div>
+						<div class="faq__item">
+							<p class="faq__item-title">Сколько времени занимает ремонт?</p>
+							<div class="faq__item-answer">
+								<p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+									занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+									техники, срок диагностики может увеличиться до нескольких дней. Обычно
+									диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+									в зависимости от сложности и состояния вашей техники, срок диагностики может
+									увеличиться до нескольких дней.</p>
+							</div>
+						</div>
+						<div class="faq__item">
+							<p class="faq__item-title">Есть ли у вас выездной мастер?</p>
+							<div class="faq__item-answer">
+								<p class="faq__item-text">Обычно диагностика проводится в день приема техники и
+									занимает от нескольких часов. Но, в зависимости от сложности и состояния вашей
+									техники, срок диагностики может увеличиться до нескольких дней. Обычно
+									диагностика проводится в день приема техники и занимает от нескольких часов. Но,
+									в зависимости от сложности и состояния вашей техники, срок диагностики может
+									увеличиться до нескольких дней.</p>
+							</div>
+						</div>
+					</div>
+					<!-- /.faq-box -->
+				</div>
+				<!-- /.faq -->
 			</div>
 			<div class="service-info">
 				<div class="mobile service-titleBx">
@@ -242,15 +255,15 @@ $coords = explode('|', $coords);
 				<div class="service-info__address">Проспект Ветеранов</div>
 				*/ ?>
 
-                <div class="service-info-data">
-                    <a href="mailto: info@Hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/mail.svg" alt=""><span>info@Hardwarespb.ru</span></a>
-                    <a href="mailto: hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/globe.svg" alt=""><span>hardwarespb.ru</span></a>
-                </div>
-                <!-- /.service-info-data -->
-                <p class="service-info__date">
-                    Дата добавления: 29.07.2023
-                </p>
-                <!-- /.service__date -->
+				<div class="service-info-data">
+					<a href="mailto: info@Hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/mail.svg" alt=""><span>info@Hardwarespb.ru</span></a>
+					<a href="mailto: hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/globe.svg" alt=""><span>hardwarespb.ru</span></a>
+				</div>
+				<!-- /.service-info-data -->
+				<p class="service-info__date">
+					Дата добавления: 29.07.2023
+				</p>
+				<!-- /.service__date -->
 				<div class="service-info-buttonBx">
 					<button class="pb service-info__button" data-type="repair">
 						<span>
