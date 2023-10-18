@@ -1,3 +1,11 @@
+<?php
+$categories = get_terms([
+	'taxonomy' => 'categories',
+	'exclude' => [587],
+	'hide_empty' => false,
+]);
+?>
+
 <div class="_overlay-bg modal repair" data-popup="repair">
 	<div class="repair-formBx">
 		<div class="title repair__title">Заявка на ремонт техники</div>
@@ -10,15 +18,19 @@
 				<div class="repair-inputBx"><input type="text" name="tel" placeholder="Номер телефона" required></div>
 			</div>
 			<!-- /.repair-grid -->
-			<div class="repair-inputBx select">
-				<select name="" id="">
-					<option value="Выберите технику" disabled="disabled" selected="selected">Выберите технику</option>
-					<option value="Монитор">Монитор</option>
-					<option value="Моноблок">Моноблок</option>
-					<option value="Телевизор">Телевизор</option>
-				</select>
-			</div>
-			<!-- /.repair-inputBx -->
+
+			<?php if (!empty($categories)) { ?>
+				<div class="repair-inputBx select">
+					<select name="" id="">
+						<option value="Выберите технику" disabled="disabled" selected="selected">Выберите технику</option>
+						<?php foreach ($categories as $cat) { ?>
+							<option value="<?= $cat->name ?>"><?= $cat->name ?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<!-- /.repair-inputBx -->
+			<?php } ?>
+
 			<button class="pb repair__button">Отправить</button>
 		</form>
 		<p class="repair__notice">

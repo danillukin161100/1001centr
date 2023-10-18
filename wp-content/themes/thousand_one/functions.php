@@ -162,10 +162,10 @@ add_action('after_setup_theme', function () {
 			if ($cat != 'all_categories') {
 				$cat = get_term_by('slug', $cat, 'categories');
 				$cat_label = (!empty(get_field('variant_2', $cat))) ? get_field('variant_2', $cat) : $cat->name;
-				$result_cat = ' по ремонту ' . $cat_label;
+				$result_cat = ' по ремонту<br>' . $cat_label;
 				$result_cat = mb_strtolower($result_cat);
 			} else {
-				$result_cat = ' по ремонту техники ';
+				$result_cat = ' по ремонту<br>техники ';
 			}
 
 			$result_firm = null;

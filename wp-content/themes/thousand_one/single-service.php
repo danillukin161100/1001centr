@@ -36,6 +36,9 @@ if ($delivery_to_client = get_field('delivery_to_client')) {
 if ($sale_of_spare = get_field('sale_of_spare')) {
 	$primaries['sale_of_spare'] = $sale_of_spare;
 }
+
+$mail = get_field('email');
+$site = get_field('site');
 ?>
 <section class="service" data-service-id="<?= get_the_ID() ?>">
 	<div class="service__container">
@@ -62,7 +65,7 @@ if ($sale_of_spare = get_field('sale_of_spare')) {
 					</div>
 					<!-- /.service-titleBx -->
 					<div class="service-map">
-						<div id="service-map" class="js-map" data-addr="Hardwarespb" <?= (!empty($coords[0])) ? 'data-x="' . $coords[0] . '"' : '' ?> <?= (!empty($coords[1])) ? 'data-y="' . $coords[1] . '"' : '' ?>></div>
+						<div id="service-map" class="js-map" data-addr="<?= $address ?>" <?= (!empty($coords[0])) ? 'data-x="' . $coords[0] . '"' : '' ?> <?= (!empty($coords[1])) ? 'data-y="' . $coords[1] . '"' : '' ?>></div>
 					</div>
 				</div>
 				<?php if (!empty($content) || !empty($primaries)) { ?>
@@ -198,7 +201,7 @@ if ($sale_of_spare = get_field('sale_of_spare')) {
 						<span class="service__icon">
 							<img src="<?= get_template_directory_uri() ?>/images/service/check.svg" alt="">
 						</span>
-						<span class="service__title">Hardwarespb</span>
+						<span class="service__title"><?= get_the_title() ?></span>
 					</div>
 					<div class="service-titleBx__item">
 						<span class="service__star">
@@ -255,13 +258,19 @@ if ($sale_of_spare = get_field('sale_of_spare')) {
 				<div class="service-info__address">Проспект Ветеранов</div>
 				*/ ?>
 
-				<div class="service-info-data">
-					<a href="mailto: info@Hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/mail.svg" alt=""><span>info@Hardwarespb.ru</span></a>
-					<a href="mailto: hardwarespb.ru" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/globe.svg" alt=""><span>hardwarespb.ru</span></a>
-				</div>
+				<?php if (!empty($mail) || !empty($site)) { ?>
+					<div class="service-info-data">
+						<?php if (!empty($mail)) { ?>
+							<a href="mailto: <?= $mail ?>" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/mail.svg" alt=""><span><?= $mail ?></span></a>
+						<?php } ?>
+						<?php if (!empty($site)) { ?>
+							<a href="mailto: <?= $site ?>" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/globe.svg" alt=""><span><?= $site ?></span></a>
+						<?php } ?>
+					</div>
+				<?php } ?>
 				<!-- /.service-info-data -->
 				<p class="service-info__date">
-					Дата добавления: 29.07.2023
+					Дата добавления: <?= get_the_date('d.m.Y') ?>
 				</p>
 				<!-- /.service__date -->
 				<div class="service-info-buttonBx">
