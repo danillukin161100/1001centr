@@ -230,7 +230,7 @@ $site = get_field('site');
 							<a href="mailto: <?= $mail ?>" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/mail.svg" alt=""><span><?= $mail ?></span></a>
 						<?php } ?>
 						<?php if (!empty($site)) { ?>
-							<a href="mailto: <?= $site ?>" class="service-info-data__item"><img src="<?= get_template_directory_uri() ?>/images/service/globe.svg" alt=""><span><?= $site ?></span></a>
+							<a href="<?= $site ?>" class="service-info-data__item" target="_blank"><img src="<?= get_template_directory_uri() ?>/images/service/globe.svg" alt=""><span><?= $site ?></span></a>
 						<?php } ?>
 					</div>
 				<?php } ?>
