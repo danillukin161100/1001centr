@@ -179,6 +179,8 @@ add_action('after_setup_theme', function () {
 			if (!empty($result_city)) $result .= $result_city;
 
 			return $result;
+		} else {
+			return get_the_title();
 		}
 	}
 

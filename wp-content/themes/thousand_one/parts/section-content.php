@@ -7,6 +7,12 @@
 					<p class="content__subtitle"><?= $subtitle ?></p>
 				<?php } ?>
 				<!-- /.content__subtitle -->
+
+				<?php if ($content = get_the_content()) { ?>
+					<div class="content__text">
+						<?= apply_filters('the_content', $content); ?>
+					</div>
+				<?php } ?>
 			</div>
 			<!-- /.content-main -->
 		</div>

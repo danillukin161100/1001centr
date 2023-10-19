@@ -58,13 +58,13 @@ if ($services->have_posts()) {
 			$service_data->moder = $moder;
 		}
 
-		if ($address = get_field('address')) {
-			$service_data->address = $address;
-		}
-
 		$city = null;
 		if (($cities = get_the_terms(get_the_ID(), 'city')) && !empty($cities)) {
 			$service_data->city = array_shift($cities);
+		}
+
+		if ($address = get_field('address')) {
+			$service_data->address = 'г. ' . $service_data->city->name . ', ' . $address;
 		}
 
 		if ($rate = get_field('rate')) {
