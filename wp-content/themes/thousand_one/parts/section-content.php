@@ -1,7 +1,7 @@
-<section class="content">
+<section class="docs">
 	<div class="content__container">
 		<div class="content-inner">
-			<div class="content-main">
+			<div class="">
 				<h1 class="content__title"><?= getMetaTag('h1') ?></h1>
 				<?php if ($subtitle = get_field('subtitle')) { ?>
 					<p class="content__subtitle"><?= $subtitle ?></p>
