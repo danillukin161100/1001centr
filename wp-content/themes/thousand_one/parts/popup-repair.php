@@ -12,16 +12,16 @@ $categories = get_terms([
 		<div class="repair__subtitle">Оставьте данные и мы передадим заявку в сервисный центр, который окажет вам услугу в ближайшее время.
 		</div>
 		<!-- /.repair__subtitle -->
-		<form action="#" class="repair-form">
+		<form <?= cibaFormsAttributes('repair-form') ?>>
 			<div class="repair-grid">
 				<div class="repair-inputBx"><input type="text" name="fio" placeholder="Ваше имя" required></div>
-				<div class="repair-inputBx"><input type="text" name="tel" placeholder="Номер телефона" required></div>
+				<div class="repair-inputBx"><input type="text" name="phone" placeholder="Номер телефона" required></div>
 			</div>
 			<!-- /.repair-grid -->
 
 			<?php if (!empty($categories)) { ?>
 				<div class="repair-inputBx select">
-					<select name="" id="">
+					<select name="tech_type" id="">
 						<option value="Выберите технику" disabled="disabled" selected="selected">Выберите технику</option>
 						<?php foreach ($categories as $cat) { ?>
 							<option value="<?= $cat->name ?>"><?= $cat->name ?></option>

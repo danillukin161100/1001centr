@@ -19,8 +19,34 @@ add_action('admin_menu', function () {
 }, 25);
 
 add_action('wp_enqueue_scripts', function () {
-	wp_enqueue_script('ciba-forms-script', plugin_dir_url(__FILE__) . 'js/script.js', array(), '1.0', true);
+	wp_enqueue_script('ciba-forms-script', plugin_dir_url(__FILE__) . 'js/script.js', array('jquery'), '1.0', true);
 });
+
+function cibaFormsGetOptions()
+{
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'ciba_forms_options';
+	$sql = "SELECT * FROM $table_name";
+	$res = $wpdb->get_row($sql, ARRAY_A);
+	unset($res['id']);
+	return $res;
+}
+
+function cibaFormsAttributes(...$classes)
+{
+	$result = '';
+
+	// Классы формы
+	$classes[] = 'ciba_form';
+	$result .= 'class="';
+	$result .= implode(' ', $classes);
+	$result .= '"';
+
+	// Атрибуты
+	$result .= ' data-cibaForms-action="' . plugin_dir_url(__FILE__) . 'order.php"';
+
+	return $result;
+}
 
 function cibaForms_callback()
 {
@@ -48,7 +74,7 @@ function cibaForms_callback()
 		$api_key = sanitize_text_field($_POST['api_key']);
 		$source_id = sanitize_text_field($_POST['source_id']);
 		$mango_name = sanitize_text_field($_POST['mango_name']);
-		
+
 		$wpdb->replace($table_name, array(
 			'id' => (!empty($id)) ? $id : null,
 			'api_key' => $api_key,
@@ -67,6 +93,7 @@ function cibaForms_callback()
 	$mango_name = isset($result[0]->mango_name) ? $result[0]->mango_name : '';
 
 	// Выводим форму на странице
+
 ?>
 	<div class="wrap">
 		<h2>Настройки Ciba Forms</h2>
@@ -75,11 +102,11 @@ function cibaForms_callback()
 				<input type="hidden" name="id" value="<?= esc_attr($id); ?>">
 				<div class="form-field">
 					<label for="api_key">Ключ API:</label>
-					<input type="text" id="api_key" name="api_key" value="<?= esc_attr($api_key); ?>" class="regular-text">
+					<input type="password" id="api_key" name="api_key" required value="<?= esc_attr($api_key); ?>" class="regular-text">
 				</div>
 				<div class="form-field">
 					<label for="source_id">Источник:</label>
-					<input type="text" id="source_id" name="source_id" value="<?= esc_attr($source_id); ?>" class="regular-text">
+					<input type="text" id="source_id" name="source_id" required value="<?= esc_attr($source_id); ?>" class="regular-text">
 				</div>
 				<div class="form-field">
 					<label for="mango_name">Mango:</label>
