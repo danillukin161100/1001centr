@@ -1,4 +1,4 @@
-<section class="docs">
+<section class="content">
 	<div class="content__container">
 		<div class="content-inner">
 			<div class="">
